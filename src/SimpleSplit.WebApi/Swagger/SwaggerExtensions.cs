@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -27,6 +29,9 @@ namespace SimpleSplit.WebApi.Swagger
             // Enable examples
             options.ExampleFilters();
 
+            // Custom names
+            options.CustomSchemaIds(i => i.FriendlyId());
+
             return options;
         }
 
@@ -39,5 +44,45 @@ namespace SimpleSplit.WebApi.Swagger
 
             return options;
         }
+    }
+
+    public static class TypeHelpers
+    {
+        public static string FriendlyId(this Type type, bool fullyQualified = false)
+        {
+            var typeName = fullyQualified
+                ? type.FullNameSansTypeArguments().Replace("+", ".")
+                : type.NameForType();
+
+            if (type.GetTypeInfo().IsGenericType)
+            {
+                var genericArgumentIds = type.GetGenericArguments()
+                    .Select(t => t.FriendlyId(fullyQualified))
+                    .ToArray();
+
+                return new StringBuilder(typeName)
+                    .Replace(String.Format("`{0}", genericArgumentIds.Count()), String.Empty)
+                    .Append(String.Format(" [{0}]", String.Join(",", genericArgumentIds).TrimEnd(',')))
+                    .ToString();
+            }
+
+            return typeName;
+        }
+
+        private static string FullNameSansTypeArguments(this Type type)
+        {
+            if (string.IsNullOrEmpty(type.FullName)) return string.Empty;
+
+            var fullName = type.FullName;
+            var chopIndex = fullName.IndexOf("[[");
+            return (chopIndex == -1) ? fullName : fullName.Substring(0, chopIndex);
+        }
+
+        public static string NameForType(this Type type)
+            => type
+                .GetCustomAttributes(false)
+                .OfType<DisplayNameAttribute>()
+                .FirstOrDefault()?
+                .DisplayName ?? type.Name;
     }
 }

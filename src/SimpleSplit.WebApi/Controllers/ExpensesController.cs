@@ -28,7 +28,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// <returns>List of <see cref="ExpenseViewModel"/></returns>
         /// <param name="pageNumber" example="1">Page number</param>
         /// <param name="pageSize" example="20">Page size</param>
-        /// <param name="sorting" example='["enteredAt,DESC","description"]'>Array of sorting information</param>
+        /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information</param>
         /// <param name="queryParameters">Additional query string paramaters, used to pass search details</param>
         /// <response code="200">Returns a list of available expenses.</response>
         [HttpGet]
@@ -51,7 +51,7 @@ namespace SimpleSplit.WebApi.Controllers
             if (response.HasErrors)
                 return BadRequest(response.AllErrors());
 
-            return Ok(response.Data);
+            return Ok(response.Value);
         }
     }
 

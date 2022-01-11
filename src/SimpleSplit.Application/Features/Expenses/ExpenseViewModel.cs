@@ -1,8 +1,10 @@
-﻿using SimpleSplit.Application.Base;
+﻿using System.ComponentModel;
+using SimpleSplit.Application.Base;
 using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Application.Features.Expenses
 {
+    [DisplayName("Expenses")]
     public class ExpenseViewModel : ViewModel
     {
         /// <summary>
@@ -14,6 +16,7 @@ namespace SimpleSplit.Application.Features.Expenses
         /// Entry date
         /// </summary>
         public DateTime EnteredAt { get; set; }
+
         /// <summary>
         /// Amount in EURO
         /// </summary>

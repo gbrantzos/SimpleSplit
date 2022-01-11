@@ -16,7 +16,8 @@ namespace SimpleSplit.Application.Features.Expenses
             _sortingExpressionBuilder = sortingExpressionBuilder;
         }
 
-        protected override async Task<PagedResult<ExpenseViewModel>> HandleCore(SearchExpenses request, CancellationToken cancellationToken)
+        protected override async Task<PagedResult<ExpenseViewModel>> HandleCore(SearchExpenses request,
+            CancellationToken cancellationToken)
         {
             var models = await _repository.Find(Specification<Expense>.True,
                 sorting: _sortingExpressionBuilder.BuildSorting<Expense>(request.SortingDetails),

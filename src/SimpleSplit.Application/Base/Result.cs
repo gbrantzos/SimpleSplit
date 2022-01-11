@@ -57,18 +57,18 @@
     }
 
     /// <summary>
-    /// Helper class to wrap an operation or method result. Result is of type <typeparamref name="TData"/>
+    /// Helper class to wrap an operation or method result. Result is of type <typeparamref name="TValue"/>
     /// </summary>
-    public sealed class Result<TData> : Result
+    public sealed class Result<TValue> : Result
     {
         // The actual data returned with response
-        public TData Data { get; } = default(TData);
+        public TValue Value { get; } = default(TValue);
 
-        public Result(TData data, IEnumerable<string> errors = null, Exception exception = null)
+        public Result(TValue value, IEnumerable<string> errors = null, Exception exception = null)
         {
-            _errors = (errors ?? Array.Empty<string>()).ToList();
-            Data = data;
+            Value = value;
             Exception = exception;
+            _errors = (errors ?? Array.Empty<string>()).ToList();
 
             if (errors?.Any() == true)
                 Status = ResultStatus.Failure;
@@ -78,6 +78,6 @@
         }
 
         // Implicit operators, for lazy people
-        public static implicit operator Result<TData>(TData data) => new(data);
+        public static implicit operator Result<TValue>(TValue data) => new(data);
     }
 }
