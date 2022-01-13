@@ -72,7 +72,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Base
             CancellationToken cancellationToken = default)
         {
             var dbSet = Set;
-            var query = details?.Length == 0
+            var query = (details ?? DefaultInclude).Length == 0
                 ? dbSet
                 : DbSetWithDetails(dbSet, details);
             query = query.Where(criteria.ToExpression());
@@ -137,9 +137,9 @@ namespace SimpleSplit.Infrastructure.Persistence.Base
             return sortedQuery;
         }
 
-        private static IQueryable<TEntity> DbSetWithDetails(IQueryable<TEntity> query, IEnumerable<string> details)
+        private IQueryable<TEntity> DbSetWithDetails(IQueryable<TEntity> query, IEnumerable<string> details)
         {
-            foreach (var detail in details ?? Array.Empty<string>())
+            foreach (var detail in details ?? DefaultInclude)
                 query = query.Include(detail);
 
             return query;

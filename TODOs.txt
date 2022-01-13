@@ -4,7 +4,6 @@
 --------------------------------------------------------------------------------
 ## Expense
 
-- GET       /Expenses?params        SearchExpenses
 - POST      /Expenses               SaveExpense
 - DELETE    /Expenses               DeleteExpense
 --------------------------------------------------------------------------------
@@ -29,9 +28,7 @@ API
 Other TODO's
 - Metrics - Prometheus
 - Mapster
-- Queryparameters Parser - > Specification
 --------------------------------------------------------------------------------
-
 
 
 --------------------------------------------------------------------------------
@@ -41,11 +38,6 @@ WebAPP::Next
 - Search ???
 - Authentication ???
 
-
-
--   Remove functionality
--   Revamp UI and menu
 https://volve.cc/blog/expense-management-software-features
--   Spinner for long http calls
 https://ckjaersig.dk/2020/05/showing-a-loading-spinner-delayed-with-rxjs/
 --------------------------------------------------------------------------------

@@ -14,10 +14,8 @@ namespace SimpleSplit.Domain.Features.Expenses
 
         public string Description { get; set; }
         public DateTime EnteredAt { get; set; }
-
         public Money Amount { get; set; }
-
-        public string Category { get; set; }
+        public Category Category { get; set; }
         public bool IsOwnerCharge { get; set; }
         public DateTime? SharedAt { get; set; }
     }

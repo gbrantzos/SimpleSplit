@@ -23,7 +23,7 @@ namespace SimpleSplit.Application.Features.Expenses
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Category. TODO to be moved in separate table
+        /// Category description.
         /// </summary>
         public string Category { get; set; }
 
@@ -49,7 +49,7 @@ namespace SimpleSplit.Application.Features.Expenses
                 Description   = domainObject.Description,
                 Amount        = domainObject.Amount.Amount,
                 EnteredAt     = domainObject.EnteredAt,
-                Category      = domainObject.Category,
+                Category      = domainObject.Category?.Description,
                 IsOwnerCharge = domainObject.IsOwnerCharge,
                 SharedAt      = domainObject.SharedAt,
             };

@@ -1,9 +1,17 @@
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Serilog;
 using SimpleSplit.Application;
 using SimpleSplit.Infrastructure;
 using SimpleSplit.WebApi.Swagger;
 using Swashbuckle.AspNetCore.Filters;
+
+// God knows why debug terminal starts minimized!
+#if (DEBUG && WINDOWS)
+var p = Process.GetCurrentProcess();
+ShowWindow(p.MainWindowHandle, RESTORE);
+#endif
 
 // Prepare logging path and configuration
 var binPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? String.Empty;
@@ -79,4 +87,14 @@ static IConfiguration GetConfiguration(string path)
         .Build();
 
 // To support tests!
-public partial class Program { }
+public partial class Program
+{
+#if (DEBUG && WINDOWS)
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
+    private const int HIDE = 0;
+    private const int MAXIMIZE = 3;
+    private const int MINIMIZE = 6;
+    private const int RESTORE = 9;
+#endif
+}

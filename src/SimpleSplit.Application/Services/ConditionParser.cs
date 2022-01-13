@@ -33,6 +33,7 @@ namespace SimpleSplit.Application.Services
                 var prop = Array.Find(typeProperties,
                     p => p.Name.Equals(propertyName, StringComparison.CurrentCultureIgnoreCase));
                 if (prop == null) continue;
+
                 if (!KnownOperators.Contains(condition.Operator))
                     throw new ArgumentException($"Unsupported operator: {condition.Operator}");
 
@@ -40,7 +41,7 @@ namespace SimpleSplit.Application.Services
                 var expMember = propertyName == condition.Property
                     ? Expression.Property(expParam, prop.Name)
                     : GetNestedProperty(expParam, condition.Property);
-                var expValue = Expression.Constant(Convert.ChangeType(condition.Value, expMember.Type));
+                var expValue = Expression.Constant(SafeConvert(condition.Value, expMember.Type));
 
                 var startsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
                 var endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
@@ -76,6 +77,13 @@ namespace SimpleSplit.Application.Services
                 toReturn = Expression.PropertyOrField(toReturn, member);
             }
             return toReturn;
+        }
+
+        private static object SafeConvert(object value, Type type)
+        {
+            if (type.IsEnum)
+                return Enum.Parse(type, value.ToString());
+            return Convert.ChangeType(value, type);
         }
     }
 }

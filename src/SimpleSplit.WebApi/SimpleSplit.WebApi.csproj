@@ -9,6 +9,10 @@
 		<CodeAnalysisRuleSet>..\..\SimpleSplit.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+		<DefineConstants>WINDOWS</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<EmbeddedResource Include="Swagger\Themes\*.css" />
 	</ItemGroup>

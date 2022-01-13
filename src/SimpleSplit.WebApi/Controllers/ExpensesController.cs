@@ -29,7 +29,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="pageNumber" example="1">Page number.</param>
         /// <param name="pageSize" example="20">Page size.</param>
         /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information.</param>
-        /// <param name="conditions" example='["amount|gte|50"]'>
+        /// <param name="conditions" example='["description|starts|Καθαριότητα"]'>
         /// Search conditions.
         /// <para>
         /// Conditions are in the form 'property|operator|value'.<br/>
