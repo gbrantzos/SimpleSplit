@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SimpleSplit.Domain.Base;
 using SimpleSplit.Domain.Features.Expenses;
+using SimpleSplit.Infrastructure.Persistence.Base;
 using SimpleSplit.Infrastructure.Persistence.Repositories;
 
 namespace SimpleSplit.Infrastructure.Persistence
@@ -21,7 +23,8 @@ namespace SimpleSplit.Infrastructure.Persistence
                 options.EnableSensitiveDataLogging();
             });
 
-            // Repositories
+            // Repositories - Unit of Work
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
             return services;

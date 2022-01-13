@@ -20,7 +20,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Base
             {
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException /*ex*/)
             {
                 // TODO Revisit, looks like Vendor specific!
                 //var mainEntity = ex.Entries[0].Entity as Entity;

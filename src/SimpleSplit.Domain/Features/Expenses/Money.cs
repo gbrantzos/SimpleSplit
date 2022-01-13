@@ -47,8 +47,8 @@ namespace SimpleSplit.Domain.Features.Expenses
 
         // Shortcuts
         public static Money InEuro(decimal amount) => new Money(amount, Currency.EUR);
-        public static explicit operator Money(decimal amount) => new Money(amount, Currency.EUR);
-        public static explicit operator Money(double amount) => new Money((decimal)amount, Currency.EUR);
+        public static implicit operator Money(decimal amount) => new Money(amount, Currency.EUR);
+        public static implicit operator Money(double amount) => new Money((decimal)amount, Currency.EUR);
 
         // Operators
         public static Money operator +(Money left, Money right)
@@ -96,5 +96,8 @@ namespace SimpleSplit.Domain.Features.Expenses
         public static bool operator <(Money left, Money right) => Compare(left, right) == -1;
         public static bool operator >=(Money left, Money right) => Compare(left, right) >= 0;
         public static bool operator <=(Money left, Money right) => Compare(left, right) <= 0;
+
+        // Implicit operators
+        public static implicit operator Money(string str) => Money.InEuro(Decimal.Parse(str));
     }
 }

@@ -17,7 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSplit.Domain", "src\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSplit.Infrastructure", "src\SimpleSplit.Infrastructure\SimpleSplit.Infrastructure.csproj", "{74402467-E508-4BC4-AE6A-ED76CC507814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSplit.Common", "src\SimpleSplit.Common\SimpleSplit.Common.csproj", "{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSplit.Common", "src\SimpleSplit.Common\SimpleSplit.Common.csproj", "{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{2A79BF6C-213A-4C47-B322-067617D993DD}"
+	ProjectSection(SolutionItems) = preProject
+		TODOs.txt = TODOs.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,6 +9,6 @@
     {
         public abstract TKey ID { get; set; }
 
-        public bool IsNew => ID.IDValue == default && RowVersion == 1;
+        public bool IsNew => ID.Value == default && RowVersion == 1;
     }
 }

@@ -21,6 +21,21 @@ namespace SimpleSplit.Application.Features.Expenses
         /// Amount in EURO
         /// </summary>
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// Category. TODO to be moved in separate table
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        /// Expense is charged on owner of appartment
+        /// </summary>
+        public bool IsOwnerCharge { get; set; }
+
+        /// <summary>
+        /// When this expense was shared
+        /// </summary>
+        public DateTime? SharedAt { get; set; }
     }
 
     public static class ExpenseViewModelExtensions
@@ -29,11 +44,14 @@ namespace SimpleSplit.Application.Features.Expenses
         {
             return new ExpenseViewModel
             {
-                ID          = domainObject.ID.IDValue,
-                RowVersion  = domainObject.RowVersion,
-                Description = domainObject.Description,
-                Amount      = domainObject.Amount.Amount,
-                EnteredAt   = domainObject.EnteredAt,
+                ID            = domainObject.ID.Value,
+                RowVersion    = domainObject.RowVersion,
+                Description   = domainObject.Description,
+                Amount        = domainObject.Amount.Amount,
+                EnteredAt     = domainObject.EnteredAt,
+                Category      = domainObject.Category,
+                IsOwnerCharge = domainObject.IsOwnerCharge,
+                SharedAt      = domainObject.SharedAt,
             };
         }
     }

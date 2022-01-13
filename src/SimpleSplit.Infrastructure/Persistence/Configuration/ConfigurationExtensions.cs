@@ -14,7 +14,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
             where TProperty : EntityID, new()
         {
             var converter = new ValueConverter<TProperty, long>(
-                v => v.IDValue,
+                v => v.Value,
                 v => EntityID.FromValue<TProperty>(v));
             propertyBuilder
                 .HasColumnName(columnName)

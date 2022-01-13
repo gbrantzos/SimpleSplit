@@ -29,7 +29,13 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="pageNumber" example="1">Page number</param>
         /// <param name="pageSize" example="20">Page size</param>
         /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information</param>
-        /// <param name="queryParameters">Additional query string paramaters, used to pass search details</param>
+        /// <param name="conditions" example='["amount|gte|50"]'>
+        /// Search conditions.
+        /// <para>
+        /// Conditions are in the form 'property|operator|value'.<br/>
+        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends'.
+        /// </para>
+        /// </param>
         /// <response code="200">Returns a list of available expenses.</response>
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PagedResult<ExpenseViewModel>))]
@@ -39,13 +45,14 @@ namespace SimpleSplit.WebApi.Controllers
         public async Task<ActionResult> GetAll([FromQuery]int pageNumber = 1,
             [FromQuery] int pageSize = -1,
             [FromQuery] string[] sorting = null,
-            [FromQuery] IDictionary<string, string[]> queryParameters = null)
+            [FromQuery] string[] conditions = null)
         {
             var searchRequest = new SearchExpenses
             {
-                SortingDetails = sorting,
-                PageNumber     = pageNumber,
-                PageSize       = pageSize
+                SearchConditions = conditions ?? Array.Empty<string>(),
+                SortingDetails = sorting ?? Array.Empty<string>(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
             var response = await _mediator.Send(searchRequest);
             if (response.HasErrors)

@@ -4,9 +4,9 @@
 --------------------------------------------------------------------------------
 ## Expense
 
-- GET       /Expenses?params        QueryExpenses
+- GET       /Expenses?params        SearchExpenses
 - POST      /Expenses               SaveExpense
-- DELETE    /Expenses               DeleteExpense    
+- DELETE    /Expenses               DeleteExpense
 --------------------------------------------------------------------------------
 
 
@@ -22,12 +22,19 @@ API
 
 - GET       /Settlement?params      QuerySettlenets
 - GET       /Settlement/{id}        GetSettlement
-
-....
-....
-....   
+--------------------------------------------------------------------------------
 
 
+--------------------------------------------------------------------------------
+Other TODO's
+- Metrics - Prometheus
+- Mapster
+- Queryparameters Parser - > Specification
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
 WebAPP::Next
 
 - Animations
@@ -35,13 +42,10 @@ WebAPP::Next
 - Authentication ???
 
 
-Other TODO's
 
 -   Remove functionality
 -   Revamp UI and menu
 https://volve.cc/blog/expense-management-software-features
 -   Spinner for long http calls
 https://ckjaersig.dk/2020/05/showing-a-loading-spinner-delayed-with-rxjs/
-
-https://stackoverflow.com/questions/39653072/how-to-use-forroot-within-feature-modules-hierarchy
-https://www.google.com/search?q=angular+detect+offline&oq=angular+detect+offline&aqs=edge..69i57j0i22i30l3.4618j0j4&sourceid=chrome&ie=UTF-8
+--------------------------------------------------------------------------------

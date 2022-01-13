@@ -12,6 +12,7 @@ namespace SimpleSplit.Application
             services.AddMediatR(assembly);
 
             services.AddTransient<ISortingParser, SortingParser>();
+            services.AddTransient<IConditionParser, ConditionParser>();
 
             return services;
         }

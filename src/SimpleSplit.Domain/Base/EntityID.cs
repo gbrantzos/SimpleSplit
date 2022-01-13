@@ -2,18 +2,18 @@
 {
     public abstract class EntityID : ValueObject
     {
-        public long IDValue { get; private init; }
+        public long Value { get; private init; }
 
-        protected EntityID(long id) => IDValue = id;
+        protected EntityID(long id) => Value = id;
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return IDValue;
+            yield return Value;
         }
 
         public static TEntityID FromValue<TEntityID>(long value) where TEntityID : EntityID, new()
-            => new TEntityID() { IDValue = value };
+            => new TEntityID() { Value = value };
 
-        public override string ToString() => $"{GetType().Name}: {IDValue}";
+        public override string ToString() => $"{GetType().Name}: {Value}";
     }
 }

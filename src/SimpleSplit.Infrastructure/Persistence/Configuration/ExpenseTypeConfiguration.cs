@@ -19,9 +19,9 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
 
             builder.Property(m => m.Description).HasColumnName("description");
             builder.Property(m => m.EnteredAt).HasColumnName("entered_at");
-            //builder.Property(m => m.Category).HasColumnName("category");
-            //builder.Property(m => m.ForOwner).HasColumnName("for_owner");
-            //builder.Property(m => m.PaidAt).HasColumnName("paid_at");
+            builder.Property(m => m.Category).HasColumnName("category");
+            builder.Property(m => m.IsOwnerCharge).HasColumnName("is_owner_charge");
+            builder.Property(m => m.SharedAt).HasColumnName("shared_at");
         }
     }
 }

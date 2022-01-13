@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SimpleSplit.Common;
 using SimpleSplit.Domain.Base;
 
 namespace SimpleSplit.Domain.Exceptions
@@ -12,7 +12,11 @@ namespace SimpleSplit.Domain.Exceptions
             : base($"Could not find entity {entityType.Name} with {id}")
         {
             EntityType = entityType;
-            // TODO ID = id.ThrowIfNull(nameof(ID));
+            ID = id.ThrowIfNull(nameof(ID));
         }
+
+        private EntityNotFoundException() : base() { }
+        public EntityNotFoundException(string message) : base(message) { }
+        public EntityNotFoundException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
