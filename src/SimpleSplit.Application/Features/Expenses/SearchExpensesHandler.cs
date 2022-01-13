@@ -28,7 +28,7 @@ namespace SimpleSplit.Application.Features.Expenses
             var specs = _conditionParser.ParseConditions<Expense>(new ConditionGroup
             {
                 Grouping = ConditionGroup.GroupingOperator.And,
-                Conditions = (request.SearchConditions ?? Array.Empty<string>())
+                Conditions = request.SearchConditions
                     .Select(Condition.FromString)
                     .ToList()
             });

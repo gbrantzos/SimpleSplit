@@ -21,6 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSplit.Common", "src\S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{2A79BF6C-213A-4C47-B322-067617D993DD}"
 	ProjectSection(SolutionItems) = preProject
+		SimpleSplit.ruleset = SimpleSplit.ruleset
 		TODOs.txt = TODOs.txt
 	EndProjectSection
 EndProject
