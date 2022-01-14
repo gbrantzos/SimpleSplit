@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -31,6 +32,12 @@ namespace SimpleSplit.WebApi.Swagger
 
             // Custom names
             options.CustomSchemaIds(i => i.FriendlyId());
+
+            options.CustomOperationIds(i =>
+            {
+                var descriptor = (ControllerActionDescriptor)i.ActionDescriptor;
+                return $"{descriptor.RouteValues["controller"]}_{descriptor.ActionName}";
+            });
 
             return options;
         }

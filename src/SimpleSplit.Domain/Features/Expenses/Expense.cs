@@ -1,4 +1,4 @@
-﻿using SimpleSplit.Domain.Base;
+﻿﻿using SimpleSplit.Domain.Base;
 
 namespace SimpleSplit.Domain.Features.Expenses
 {

@@ -9,8 +9,11 @@ using Swashbuckle.AspNetCore.Filters;
 
 // God knows why debug terminal starts minimized!
 #if (DEBUG && WINDOWS)
-var p = Process.GetCurrentProcess();
-ShowWindow(p.MainWindowHandle, RESTORE);
+if (Debugger.IsAttached)
+{
+    var p = Process.GetCurrentProcess();
+    ShowWindow(p.MainWindowHandle, RESTORE);
+}
 #endif
 
 // Prepare logging path and configuration
