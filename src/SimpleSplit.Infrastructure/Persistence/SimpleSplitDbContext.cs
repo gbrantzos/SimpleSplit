@@ -16,6 +16,7 @@ namespace SimpleSplit.Infrastructure.Persistence
         public const string ConnectionString = "SimpleSplit";
 
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public SimpleSplitDbContext(DbContextOptions<SimpleSplitDbContext> options)
             : base(options)

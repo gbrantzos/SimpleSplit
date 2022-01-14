@@ -8,6 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="IdGen" Version="3.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\SimpleSplit.Common\SimpleSplit.Common.csproj" />
 	</ItemGroup>
 

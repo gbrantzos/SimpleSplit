@@ -18,7 +18,7 @@ namespace SimpleSplit.WebApi.Swagger
             {
                 Title = "SimpleSplit API",
                 Version = "v1",
-                Description = "Manage building's shared expenses application"
+                Description = "Simple building's shared expenses application"
             });
             options.DocumentFilter<LowercaseDocumentFilter>();
 
@@ -46,7 +46,7 @@ namespace SimpleSplit.WebApi.Swagger
         {
             options.DocumentTitle = "SimpleSplit API";
             options.InjectStylesheet("/swagger/ui/css");
-            options.DocExpansion(DocExpansion.Full);
+            options.DocExpansion(DocExpansion.List);
             options.DefaultModelsExpandDepth(-1);
 
             return options;

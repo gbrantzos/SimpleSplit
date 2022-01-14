@@ -6,6 +6,8 @@
 
 - POST      /Expenses               SaveExpense
 - DELETE    /Expenses               DeleteExpense
+
+--> Handle Categories on SaveExpenseHandler
 --------------------------------------------------------------------------------
 
 
@@ -26,6 +28,8 @@ API
 
 --------------------------------------------------------------------------------
 Other TODO's
+
+- MediatR pipeline
 - Metrics - Prometheus
 - Mapster
 --------------------------------------------------------------------------------

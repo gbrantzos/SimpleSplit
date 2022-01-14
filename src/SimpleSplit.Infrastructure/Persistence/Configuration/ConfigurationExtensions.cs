@@ -39,7 +39,11 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
             where TEntity : Entity<TID>
             where TID : EntityID, new()
         {
-            entityBuilder.Property(propertyExpression).IsEntityID(columnName);
+            entityBuilder
+                .HasKey(e => e.ID);
+            entityBuilder
+                .Property(propertyExpression)
+                .IsEntityID(columnName);
             return entityBuilder;
         }
     }

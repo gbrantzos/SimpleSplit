@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SimpleSplit.Domain.Base;
 using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Infrastructure.Persistence.Configuration

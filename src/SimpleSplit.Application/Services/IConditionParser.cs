@@ -4,6 +4,6 @@ namespace SimpleSplit.Application.Services
 {
     public interface IConditionParser
     {
-        Specification<T> ParseConditions<T>(ConditionGroup conditionGroup);
+        Specification<T> BuildSpecifications<T>(ConditionGroup conditionGroup);
     }
 }

@@ -88,6 +88,44 @@ namespace SimpleSplit.WebApi.Controllers
 
             return Ok(response.Value);
         }
+
+        /// <summary>
+        /// Create or modify an expense entity.
+        /// </summary>
+        /// <param name="viewModel">Expense model</param>
+        /// <remarks>
+        /// <para>
+        /// Sample request:
+        ///
+        ///     POST /Expenses
+        ///     {
+        ///         "id": 0,
+        ///         "description": "Sample expense",
+        ///         "amount": 32.45,
+        ///         "forOwner": false
+        ///     }
+        ///
+        /// </para>
+        /// <para>
+        /// When posting with `id=0`, a new Expense is created. When `id` is not 0,
+        /// you must also provide `rowVersion` a value for optimistic concurrency.
+        /// </para>
+        /// </remarks>
+        /// <response code="200">Expense created or modified</response>
+        /// <response code="400"></response>
+        [HttpPost]
+        public async Task<ActionResult> SaveExpense([FromBody] ExpenseViewModel viewModel)
+        {
+            var response = await _mediator.Send(new SaveExpense { Model = viewModel });
+
+            if (response.HasException)
+                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
+
+            if (response.HasErrors)
+                return BadRequest(response.AllErrors());
+
+            return Ok(response.Value);
+        }
     }
 
     public class ExpensesGetAllExamples : IExamplesProvider<IEnumerable<ExpenseViewModel>>

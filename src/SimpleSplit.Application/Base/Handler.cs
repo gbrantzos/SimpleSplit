@@ -31,7 +31,7 @@ namespace SimpleSplit.Application.Base
         protected abstract Task<TResult> HandleCore(TRequest request, CancellationToken cancellationToken);
 
         protected Task<TResult> Failure(string message) => Failure(new string[] { message });
-        protected Task<TResult> Failure(string[] messages)
+        protected Task<TResult> Failure(IEnumerable<string> messages)
         {
             _errorMessages = messages.ToList();
             return Task.FromResult<TResult>(default);

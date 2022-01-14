@@ -18,7 +18,7 @@ namespace SimpleSplit.Application.Services
             "ends",    // Ends with
         };
 
-        public Specification<T> ParseConditions<T>(ConditionGroup conditionGroup)
+        public Specification<T> BuildSpecifications<T>(ConditionGroup conditionGroup)
         {
             var type = typeof(T);
             var typeProperties = type.GetProperties();
