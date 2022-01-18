@@ -30,6 +30,7 @@ namespace SimpleSplit.Infrastructure.Persistence
             // Repositories - Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             // Configurations
             services.AddEntityTypeConfigurations();

@@ -11,16 +11,19 @@ namespace SimpleSplit.Application.Features.Expenses
         private readonly ILogger<SaveExpenseHandler> _logger;
         private readonly IEntityIDFactory _entityIDFactory;
         private readonly IExpenseRepository _repository;
+        private readonly ICategoryRepository _categories;
         private readonly IUnitOfWork _unitOfWork;
 
         public SaveExpenseHandler(ILogger<SaveExpenseHandler> logger,
             IEntityIDFactory entityIDFactory,
             IExpenseRepository repository,
+            ICategoryRepository categories,
             IUnitOfWork unitOfWork) : base(logger)
         {
             _logger = logger;
             _entityIDFactory = entityIDFactory;
             _repository = repository;
+            _categories = categories;
             _unitOfWork = unitOfWork;
         }
 
@@ -34,11 +37,16 @@ namespace SimpleSplit.Application.Features.Expenses
 
             try
             {
+                var categories = (await _categories.GetAll()).ToList();
+
                 expense.Description   = request.Model.Description;
-                // expense.Category   = request.Category;
                 expense.Amount        = Money.InEuro(request.Model.Amount);
                 expense.IsOwnerCharge = request.Model.IsOwnerCharge;
                 expense.EnteredAt     = request.Model.EnteredAt;
+
+                var category = categories.FirstOrDefault(c => c.Description.Equals(request.Model.Category, StringComparison.CurrentCultureIgnoreCase));
+                if (category != null)
+                    expense.Category = category;
 
                 if (expense.IsNew)
                     _repository.Add(expense);

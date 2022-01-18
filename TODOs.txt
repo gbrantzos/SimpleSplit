@@ -4,10 +4,7 @@
 --------------------------------------------------------------------------------
 ## Expense
 
-- POST      /Expenses               SaveExpense
 - DELETE    /Expenses               DeleteExpense
-
---> Handle Categories on SaveExpenseHandler
 --------------------------------------------------------------------------------
 
 

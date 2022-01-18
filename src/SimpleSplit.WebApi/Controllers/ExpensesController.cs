@@ -71,12 +71,12 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="id">Expense ID.</param>
         /// <returns>Requested <see cref="ExpenseViewModel"/></returns>
         /// <response code="200">Returns Expense with requested ID.</response>
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:long}")]
         [SwaggerResponseExample(200, typeof(ExpensesGetByIDExamples))]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ExpenseViewModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetByID(int id)
+        public async Task<ActionResult> GetByID(long id)
         {
             var response = await _mediator.Send(new GetExpense { ID = id });
 
