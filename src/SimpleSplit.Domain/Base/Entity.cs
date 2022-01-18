@@ -7,7 +7,7 @@
 
     public abstract class Entity<TKey> : Entity where TKey : EntityID
     {
-        public abstract TKey ID { get; set; }
+        public abstract TKey ID { get; protected set; }
 
         public bool IsNew => RowVersion == 0;
     }

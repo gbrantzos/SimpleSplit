@@ -17,7 +17,7 @@ namespace SimpleSplit.Domain.Features.Expenses
             Shared = 3
         }
 
-        public override CategoryID ID { get; set; } = new CategoryID();
+        public override CategoryID ID { get; protected set; }
         public string Description { get; set; }
         public CategoryKind Kind { get; set; }
     }

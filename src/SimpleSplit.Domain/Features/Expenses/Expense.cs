@@ -10,7 +10,7 @@ namespace SimpleSplit.Domain.Features.Expenses
 
     public class Expense : Entity<ExpenseID>
     {
-        public override ExpenseID ID { get; set; } = new ExpenseID();
+        public override ExpenseID ID { get; protected set; }
 
         public string Description { get; set; }
         public DateTime EnteredAt { get; set; }
@@ -18,5 +18,8 @@ namespace SimpleSplit.Domain.Features.Expenses
         public Category Category { get; set; }
         public bool IsOwnerCharge { get; set; }
         public DateTime? SharedAt { get; set; }
+
+        public Expense(ExpenseID id) => ID = id;
+        protected Expense() { }
     }
 }

@@ -5,14 +5,13 @@ using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Infrastructure.Persistence.Configuration
 {
-    public class ExpenseTypeConfiguration : IEntityTypeConfiguration<Expense>
+    public class ExpenseTypeConfiguration : EntityTypeConfiguration<Expense, ExpenseID>
     {
-        public void Configure(EntityTypeBuilder<Expense> builder)
+        public ExpenseTypeConfiguration(IEntityIDFactory entityIDFactory) : base(entityIDFactory) { }
+
+        public override void Configure(EntityTypeBuilder<Expense> builder)
         {
-            builder
-                .ToTable("expense")
-                .HasEntityID(e => e.ID)
-                .AddCommonColumn();
+            base.Configure(builder);
 
             var value = builder.OwnsOne(m => m.Amount);
             value.Property(v => v.Amount).HasColumnName("amount");

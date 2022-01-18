@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleSplit.Domain.Base;
 using SimpleSplit.Domain.Features.Expenses;
+using SimpleSplit.Infrastructure.Persistence.Configuration;
 
 namespace SimpleSplit.Infrastructure.Persistence
 {
@@ -14,19 +15,24 @@ namespace SimpleSplit.Infrastructure.Persistence
 
         // ConnectionString name
         public const string ConnectionString = "SimpleSplit";
+        private readonly IEnumerable<EntityTypeConfiguration> _entityTypeConfigurations;
 
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        public SimpleSplitDbContext(DbContextOptions<SimpleSplitDbContext> options)
+        public SimpleSplitDbContext(DbContextOptions<SimpleSplitDbContext> options,
+            IEnumerable<EntityTypeConfiguration> entityTypeConfigurations)
             : base(options)
         {
+            _entityTypeConfigurations = entityTypeConfigurations;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SimpleSplitDbContext).Assembly);
+
+            foreach (var entityTypeConfiguration in _entityTypeConfigurations)
+                entityTypeConfiguration.Configure(modelBuilder);
         }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
