@@ -126,6 +126,35 @@ namespace SimpleSplit.WebApi.Controllers
 
             return Ok(response.Value);
         }
+
+        /// <summary>
+        /// Delete an expense.
+        /// </summary>
+        /// ## Sample request:
+        ///
+        ///     DELETE /expenses
+        ///     {
+        ///         "id": 12,
+        ///         "rowVersion": 2
+        ///     }
+        ///
+        /// When deleting, you must provide `rowVersion` value for optimistic concurrency.
+        /// <param name="request"></param>
+        /// <response code="200">Expense deleted</response>
+        /// <response code="400"></response>
+        [HttpDelete]
+        public async Task<ActionResult> DeleteExpense([FromBody] DeleteExpense request)
+        {
+            var response = await _mediator.Send(request);
+
+            if (response.HasException)
+                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
+
+            if (response.HasErrors)
+                return BadRequest(response.AllErrors());
+
+            return Ok();
+        }
     }
 
     public class ExpensesGetAllExamples : IExamplesProvider<IEnumerable<ExpenseViewModel>>

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Autofac.Extensions.DependencyInjection;
 using Serilog;
 using SimpleSplit.Application;
 using SimpleSplit.Infrastructure;
@@ -30,7 +31,9 @@ try
 {
     Log.Information("Starting up");
     var builder = WebApplication.CreateBuilder(args);
-    builder.Host.UseSerilog();
+    builder.Host
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+        .UseSerilog();
 
     builder.Services
         .AddInfrastructureServices(builder.Configuration)

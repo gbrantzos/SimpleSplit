@@ -37,4 +37,10 @@ namespace SimpleSplit.Application.Base
             return Task.FromResult<TResult>(default);
         }
     }
+
+    public abstract class Handler<TRequest> : Handler<TRequest, bool>
+        where TRequest : Request<bool>
+    {
+        protected Handler(ILogger logger = null) : base(logger) { }
+    }
 }

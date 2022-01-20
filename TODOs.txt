@@ -2,13 +2,6 @@
 ================================================================================
 
 --------------------------------------------------------------------------------
-## Expense
-
-- DELETE    /Expenses               DeleteExpense
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
 ## Settlement
 
 - Description
@@ -26,9 +19,12 @@ API
 --------------------------------------------------------------------------------
 Other TODO's
 
-- MediatR pipeline
 - Metrics - Prometheus
 - Mapster
+- ProblemDetails middleware
+  https://lurumad.github.io/problem-details-an-standard-way-for-specifying-errors-in-http-api-responses-asp.net-core
+- Documentation
+
 --------------------------------------------------------------------------------
 
 

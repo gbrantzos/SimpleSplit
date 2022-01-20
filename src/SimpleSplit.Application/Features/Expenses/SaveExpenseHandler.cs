@@ -54,6 +54,7 @@ namespace SimpleSplit.Application.Features.Expenses
                 await _unitOfWork.SaveAsync(cancellationToken);
                 return expense.ToViewModel();
             }
+            // TODO Specify exception
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Concurrency conflict on expense save!");
