@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Autofac.Extensions.DependencyInjection;
+using Prometheus;
 using Serilog;
 using SimpleSplit.Application;
 using SimpleSplit.Infrastructure;
@@ -59,10 +60,12 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseSerilogRequestLogging();
     app.UseAuthorization();
+    app.UseMetricServer();
+    app.UseSerilogRequestLogging();
 
     app.MapControllers();
+    app.UseHttpMetrics();
 
     // Please note that there is a bug in minimal APIs!!
     // https://github.com/dotnet/aspnetcore/issues/38185

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SimpleSplit.Application.Base;
@@ -19,10 +20,9 @@ namespace SimpleSplit.Application.Behaviors
             RequestHandlerDelegate<Result<TResponse>> next)
         {
             var requestName = typeof(TRequest).Name;
-            _logger.LogDebug("[{RequestName:l}] Executing => {Request}\r\n{RequestJson}",
+            _logger.LogDebug("[{RequestName:l}] Executing =>\r\n---> R E Q U E S T <---\r\n{@Request}\r\n-----------------------",
                 requestName,
-                request,
-                request.ToJson());
+                request);
 
             try
             {
@@ -35,17 +35,17 @@ namespace SimpleSplit.Application.Behaviors
                 // TODO Review logic!!!
                 if (response is Result responseResult)
                 {
-//                    if (responseResult.Failed)
-//                    {
-//                        var formattedMessage = AddIndent(responseResult.Message);
-//                        _logger.LogError(
-//                            $"[{requestName}] Request result has errors => {request} ({sw.ElapsedMilliseconds}ms)\r\n{formattedMessage}");
-//                    }
-//                    else
-//                    {
+                    if (responseResult.HasErrors)
+                    {
+                        var formattedMessage = AddIndent(response.Errors.ToArray());
+                        _logger.LogError(
+                            $"[{requestName}] Request result has errors, ({sw.ElapsedMilliseconds}ms)\r\n{formattedMessage}");
+                    }
+                    else
+                    {
                         _logger.LogInformation(
-                            $"[{requestName}] Executed successfully => {request} ({sw.ElapsedMilliseconds}ms)");
-//                    }
+                            $"[{requestName}] Executed successfully, ({sw.ElapsedMilliseconds}ms)");
+                    }
                 }
                 else
                 {
@@ -62,19 +62,15 @@ namespace SimpleSplit.Application.Behaviors
 
                 throw;
             }
-//        }
+        }
 
-//        private static string AddIndent(string message)
-//        {
-//            if (String.IsNullOrEmpty(message))
-//                return message;
+        private static string AddIndent(string[] messages)
+        {
+            var sb = new StringBuilder();
+            foreach (var line in messages.Where(l => !String.IsNullOrEmpty(l)))
+                sb.AppendLine($"    {line}");
 
-//            var lines = message.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-//            var sb = new StringBuilder();
-//            foreach (var line in lines)
-//                sb.AppendLine($"    {line}");
-
-//            return sb.ToString().Trim('\r', '\n');
+            return sb.ToString().Trim('\r', '\n');
         }
     }
 }

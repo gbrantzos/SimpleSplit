@@ -12,8 +12,8 @@ namespace SimpleSplit.Application
             var assembly = typeof(DependencyInjection).Assembly;
             services.AddMediatR(assembly)
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-                //.AddTransient(typeof(IPipelineBehavior<,>), typeof(MetricsBehavior<,>));
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(MetricsBehavior<,>));
             services.AddTransient<ISortingParser, SortingParser>();
             services.AddTransient<IConditionParser, ConditionParser>();
 
