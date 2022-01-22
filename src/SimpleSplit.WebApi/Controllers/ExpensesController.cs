@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Application.Features.Expenses;
@@ -12,7 +13,7 @@ namespace SimpleSplit.WebApi.Controllers
     /// <summary>
     /// Expenses controller.
     /// </summary>
-    [ApiController, Route("[controller]")]
+    [ApiController, Route("[controller]"), Authorize]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class ExpensesController : ControllerBase

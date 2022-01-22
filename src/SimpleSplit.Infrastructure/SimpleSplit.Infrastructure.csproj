@@ -14,6 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SimpleSplit.Application\SimpleSplit.Application.csproj" />
 		<ProjectReference Include="..\SimpleSplit.Common\SimpleSplit.Common.csproj" />
 		<ProjectReference Include="..\SimpleSplit.Domain\SimpleSplit.Domain.csproj" />
 	</ItemGroup>

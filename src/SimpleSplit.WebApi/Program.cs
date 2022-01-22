@@ -2,9 +2,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Autofac.Extensions.DependencyInjection;
+using Hellang.Middleware.ProblemDetails;
 using Prometheus;
 using Serilog;
 using SimpleSplit.Application;
+using SimpleSplit.Application.Features.Security;
 using SimpleSplit.Infrastructure;
 using SimpleSplit.WebApi.Swagger;
 using Swashbuckle.AspNetCore.Filters;
@@ -38,7 +40,7 @@ try
 
     builder.Services
         .AddInfrastructureServices(builder.Configuration)
-        .AddApplicationServices();
+        .AddApplicationServices(builder.Configuration);
 
     // Add services to the container.
     builder.Services
@@ -50,7 +52,20 @@ try
     builder.Services.AddSwaggerGen(options => options.SetupSwagger());
     builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
+    // Using problem details
+    // This middleware provides room for customization
+    // https://code-maze.com/using-the-problemdetails-class-in-asp-net-core-web-api/
+    // https://lurumad.github.io/problem-details-an-standard-way-for-specifying-errors-in-http-api-responses-asp.net-core
+    builder.Services.AddProblemDetails();
+
+    // Print out internal admin password
     var app = builder.Build();
+    var internalAdmin = app.Services.GetRequiredService<InternalAdministrator>();
+    Log.Information("Internal administrator credentials: {InternalAdmin} / {InternalAdminPassword}",
+        internalAdmin.UserName,
+        internalAdmin.Password);
+
+    app.UseProblemDetails();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -60,12 +75,15 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseAuthorization();
-    app.UseMetricServer();
     app.UseSerilogRequestLogging();
 
     app.MapControllers();
+
+    app.UseMetricServer();
     app.UseHttpMetrics();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     // Please note that there is a bug in minimal APIs!!
     // https://github.com/dotnet/aspnetcore/issues/38185

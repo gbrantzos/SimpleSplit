@@ -22,7 +22,7 @@ namespace SimpleSplit.WebApi.Swagger
         private static readonly Assembly Assembly = typeof(UiController).Assembly;
 
         [HttpGet("css")]
-        public IActionResult GetTheme([FromQuery] string themeName = "flattop")
+        public IActionResult GetTheme([FromQuery] string themeName = "muted")
         {
             var css = Themes.Contains(themeName)
                 ? EmbeddedResourceManager.GetText(Assembly, ResourceRoot, $"theme-{themeName}.css")

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SimpleSplit.Application.Services;
 using SimpleSplit.Domain.Base;
 using SimpleSplit.Domain.Features.Expenses;
+using SimpleSplit.Domain.Features.Security;
 using SimpleSplit.Infrastructure.Persistence.Base;
 using SimpleSplit.Infrastructure.Persistence.Configuration;
 using SimpleSplit.Infrastructure.Persistence.Repositories;
@@ -31,6 +32,7 @@ namespace SimpleSplit.Infrastructure.Persistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Configurations
             services.AddEntityTypeConfigurations();
