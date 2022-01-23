@@ -3,11 +3,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Autofac.Extensions.DependencyInjection;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.EntityFrameworkCore;
 using Prometheus;
 using Serilog;
 using SimpleSplit.Application;
 using SimpleSplit.Application.Features.Security;
 using SimpleSplit.Infrastructure;
+using SimpleSplit.Infrastructure.Persistence;
 using SimpleSplit.WebApi.Swagger;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -78,6 +80,13 @@ try
     app.UseSerilogRequestLogging();
 
     app.MapControllers();
+    app.MapGet("database", async (context) =>
+    {
+        using var scope = context.RequestServices.CreateScope();
+        var db  = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
+        var sql = db.Database.GenerateCreateScript();
+        await context.Response.WriteAsync(sql);
+    });
 
     app.UseMetricServer();
     app.UseHttpMetrics();

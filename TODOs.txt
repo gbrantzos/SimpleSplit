@@ -22,6 +22,15 @@ Other TODO's
 - Mapster
 - Documentation
 
+## User commands - requests
+- [ ] GetUsers
+- [ ] SaveUser
+- [ ] DeleteUser
+- [x] ChangeUserPassword
+- [ ] ResetUserPassword
+- [ ] LoginUser
+- [ ] GetRoles
+- [ ] SaveRoles
 --------------------------------------------------------------------------------
 
 

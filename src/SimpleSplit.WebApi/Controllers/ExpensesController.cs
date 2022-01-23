@@ -56,14 +56,7 @@ namespace SimpleSplit.WebApi.Controllers
                 PageSize = pageSize
             };
             var response = await _mediator.Send(searchRequest);
-
-            if (response.HasException)
-                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
-
-            if (response.HasErrors)
-                return BadRequest(response.AllErrors());
-
-            return Ok(response.Value);
+            return response.ToActionResult();
         }
 
         /// <summary>
@@ -80,14 +73,7 @@ namespace SimpleSplit.WebApi.Controllers
         public async Task<ActionResult> GetByID(long id)
         {
             var response = await _mediator.Send(new GetExpense { ID = id });
-
-            if (response.HasException)
-                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
-
-            if (response.HasErrors)
-                return BadRequest(response.AllErrors());
-
-            return Ok(response.Value);
+            return response.ToActionResult();
         }
 
         /// <summary>
@@ -118,14 +104,7 @@ namespace SimpleSplit.WebApi.Controllers
         public async Task<ActionResult> SaveExpense([FromBody] ExpenseViewModel viewModel)
         {
             var response = await _mediator.Send(new SaveExpense { Model = viewModel });
-
-            if (response.HasException)
-                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
-
-            if (response.HasErrors)
-                return BadRequest(response.AllErrors());
-
-            return Ok(response.Value);
+            return response.ToActionResult();
         }
 
         /// <summary>
@@ -146,15 +125,8 @@ namespace SimpleSplit.WebApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteExpense([FromBody] DeleteExpense request)
         {
-            var response = await _mediator.Send(request);
-
-            if (response.HasException)
-                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
-
-            if (response.HasErrors)
-                return BadRequest(response.AllErrors());
-
-            return Ok();
+            var response = await _mediator.Send(request) as Result;
+            return response.ToActionResult();
         }
     }
 

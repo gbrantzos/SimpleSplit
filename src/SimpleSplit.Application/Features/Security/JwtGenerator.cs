@@ -18,9 +18,9 @@ namespace SimpleSplit.Application.Features.Security
 
         public string CreateToken(Domain.Features.Security.User user, DateTime issueAt)
         {
-            var claims = new[] {
+            var claims = new[]
+            {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "Administrator"),
                 new Claim(ClaimTypes.NameIdentifier, user.ID.Value.ToString())
             };
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecurityKey));

@@ -39,9 +39,11 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
 
         protected void AddCommonColumn(EntityTypeBuilder<TEntity> builder)
         {
-            builder.Property(e => e.RowVersion).HasColumnName(SimpleSplitDbContext.RowVersion);
-            builder.Property<DateTime>(SimpleSplitDbContext.CreatedAt);
-            builder.Property<DateTime>(SimpleSplitDbContext.ModifiedAt);
+            builder.Property(e => e.RowVersion)
+                .HasColumnOrder(-19)
+                .HasColumnName(SimpleSplitDbContext.RowVersion);
+            builder.Property<DateTime>(SimpleSplitDbContext.CreatedAt).HasColumnOrder(-12);
+            builder.Property<DateTime>(SimpleSplitDbContext.ModifiedAt).HasColumnOrder(-11);
         }
 
         protected void SetEntityID(EntityTypeBuilder<TEntity> builder, Expression<Func<TEntity, TID>> propertyExpression,
@@ -51,13 +53,10 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
                 v => v.Value,
                 v => _entityIDFactory.GetID<TID>(v));
 
-            builder.Property(propertyExpression)
-                .HasColumnName(columnName)
-                .HasConversion(converter);
-
             builder.HasKey(e => e.ID);
             builder.Property(propertyExpression)
                 .HasColumnName(columnName)
+                .HasColumnOrder(-20)
                 .HasConversion(converter);
         }
     }

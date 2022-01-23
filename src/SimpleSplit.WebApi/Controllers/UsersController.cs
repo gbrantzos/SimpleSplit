@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SimpleSplit.Application.Base;
 using SimpleSplit.Application.Features.Security;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -31,17 +32,17 @@ namespace SimpleSplit.WebApi.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [SwaggerRequestExample(typeof(LoginUser), typeof(LoginUserExamples))]
-        public async Task<IActionResult> LoginUser([FromBody] LoginUser request)
+        public async Task<ActionResult> LoginUser([FromBody] LoginUser request)
         {
             var response = await _mediator.Send(request);
+            return response.ToActionResult();
+        }
 
-            if (response.HasException)
-                return StatusCode(StatusCodes.Status500InternalServerError, response.AllErrors());
-
-            if (response.HasErrors)
-                return BadRequest(response.AllErrors());
-
-            return Ok(response.Value);
+        [HttpPost("change-password"), AllowAnonymous]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPassword request)
+        {
+            var result = await _mediator.Send(request) as Result;
+            return result.ToActionResult();
         }
     }
 

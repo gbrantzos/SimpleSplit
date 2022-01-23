@@ -17,8 +17,14 @@ namespace SimpleSplit.Application.Features.Security
 
     public class LoginUserResponse
     {
-        public string UserName { get; set; }
-        public string DisplayName { get; set; }
+        /// <summary>
+        /// User details
+        /// </summary>
+        public UserViewModel User { get; set; }
+        
+        /// <summary>
+        /// Security token
+        /// </summary>
         public string Token { get; set; }
     }
 }
