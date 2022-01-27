@@ -1,6 +1,12 @@
 # Simple Split
 ================================================================================
 
+!NOTICE!
+To avoid problems with ports, reserve them
+> netsh int ipv4 add excludedportrange protocol=tcp startport=4100 numberofports=200 store=persistent
+> netsh int ipv4 show excludedportrange protocol=tcp
+> netsh int ipv4 delete excludedportrange protocol=tcp startport=4100 numberofports=200 store=persistent
+
 --------------------------------------------------------------------------------
 ## Settlement
 

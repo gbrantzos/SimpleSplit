@@ -21,11 +21,11 @@ namespace SimpleSplit.Application.Features.Security
             if (user == null)
                 return await Failure("Invalid user name or password!");
             if (user.PasswordIsReset)
-                return await Failure($"Password is reset or SetPassword was not called for {user.ID}");
+                return await Failure($"Password is reset or SetPassword was not called for {request.UserName}");
             if (!user.CheckPassword(request.Password))
                 return await Failure("Invalid user name or password!");
 
-            var token = _tokenGenerator.CreateToken(user, DateTime.Now);
+            var token = _tokenGenerator.CreateToken(user, DateTime.UtcNow);
             return new LoginUserResponse
             {
                 User  = user.ToViewModel(),

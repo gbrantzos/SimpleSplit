@@ -63,8 +63,6 @@ namespace SimpleSplit.Domain.Features.Security
             // For lenght 64, buffer should be 54 -> (54 / 3) * 4 = 64
             // For lenght 32, buffer should be 24 -> (24 / 3) * 4 = 32
             // For lenght  8, buffer should be  6 -> ( 6 / 3) * 4 =  8
-            //
-            // 
 
             var bufferLength = 3 * (int)Math.Floor((double)length / 4);
             var tokenBuffer = RandomNumberGenerator.GetBytes(bufferLength);

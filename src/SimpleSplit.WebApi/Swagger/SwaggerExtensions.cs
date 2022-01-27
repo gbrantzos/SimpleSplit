@@ -14,11 +14,12 @@ namespace SimpleSplit.WebApi.Swagger
         public static SwaggerGenOptions SetupSwagger(this SwaggerGenOptions options)
         {
             // Base information
+            var buildInfo = PrepareBuildInfo(BuildInformation.Instance);
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "SimpleSplit API",
                 Version = "v1",
-                Description = "Simple building's shared expenses application"
+                Description = $"Simple building's shared expenses application.<br/>{buildInfo}"
             });
             options.DocumentFilter<LowercaseDocumentFilter>();
 
@@ -53,6 +54,9 @@ namespace SimpleSplit.WebApi.Swagger
 
             return options;
         }
+
+        private static string PrepareBuildInfo(BuildInformation info) => 
+            $"Version <b>v{info.Version}</b> [#{info.Commit}], build at {info.BuildAt} - {info.Mode} mode.";
 
         public static SwaggerUIOptions SetupSwaggerUI(this SwaggerUIOptions options)
         {

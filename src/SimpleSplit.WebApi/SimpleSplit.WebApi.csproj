@@ -14,6 +14,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="BuildInformation.txt" />
 		<EmbeddedResource Include="Swagger\Themes\*.css" />
 	</ItemGroup>
 
@@ -38,5 +39,9 @@
 	  <ProjectReference Include="..\SimpleSplit.Common\SimpleSplit.Common.csproj" />
 	  <ProjectReference Include="..\SimpleSplit.Infrastructure\SimpleSplit.Infrastructure.csproj" />
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.PreBuild.ps1" />
+	</Target>
 
 </Project>
