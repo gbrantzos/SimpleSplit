@@ -28,7 +28,7 @@ namespace SimpleSplit.Application.Features.Expenses
         public string Category { get; set; }
 
         /// <summary>
-        /// Expense is charged on owner of appartment
+        /// Expense is charged on owner of apartment
         /// </summary>
         public bool IsOwnerCharge { get; set; }
 

@@ -16,6 +16,7 @@ namespace SimpleSplit.Application.Base
         [JsonPropertyOrder(-9)]
         public int RowVersion { get; set; }
 
+        [JsonIgnore]
         public bool IsNew => ID == 0 && RowVersion == 0;
     }
 }
