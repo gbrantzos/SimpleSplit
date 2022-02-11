@@ -24,7 +24,7 @@ deploy/
 tmp/
 
 # Build information
-BuildInfo.txt
+**/BuildInformation.txt
 
 # Visual Studio 2015
 .vs/

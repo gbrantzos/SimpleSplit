@@ -38,7 +38,7 @@ namespace SimpleSplit.Application.Features.Expenses
                 pageSize: request.PageSize,
                 cancellationToken: cancellationToken);
             var totalRows = await _repository.Count(specifications, cancellationToken);
-
+            await Task.Delay(2000);
             return new PagedResult<ExpenseViewModel>
             {
                 CurrentPage = request.PageNumber,

@@ -16,7 +16,7 @@ namespace SimpleSplit.Application.Features.Expenses
             _repository = repository;
         }
 
-        protected async override Task<ExpenseViewModel> HandleCore(GetExpense request,
+        protected override async Task<ExpenseViewModel> HandleCore(GetExpense request,
             CancellationToken cancellationToken)
         {
             try
