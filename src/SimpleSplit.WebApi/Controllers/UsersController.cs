@@ -38,10 +38,33 @@ namespace SimpleSplit.WebApi.Controllers
             return response.ToActionResult();
         }
 
+        /// <summary>
+        /// Change or reset password
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("change-password"), AllowAnonymous]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPassword request)
         {
             var result = await _mediator.Send(request) as Result;
+            return result.ToActionResult();
+        }
+
+        /// <summary>
+        /// Refresh token
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("refresh-token")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(RefreshTokenResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshToken request)
+        {
+            var result = await _mediator.Send(request);
             return result.ToActionResult();
         }
     }

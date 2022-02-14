@@ -27,7 +27,7 @@ namespace SimpleSplit.Application
             // Security
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
             services.AddScoped<JwtOptions>(sp => sp.GetService<IOptionsSnapshot<JwtOptions>>().Value);
-            services.AddTransient<ITokenGenerator, JwtGenerator>();
+            services.AddTransient<ITokenManager, JwtTokenManager>();
             services.AddSingleton(new InternalAdministrator());
 
             // Setup Jwt

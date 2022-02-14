@@ -25,6 +25,7 @@ API
 --------------------------------------------------------------------------------
 Other TODO's
 
+- HiLo implementation for more user friendly IDs
 - Mapster
 - Documentation
 

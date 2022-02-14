@@ -5,12 +5,12 @@ namespace SimpleSplit.Application.Features.Security
 {
     public class LoginUserHandler : Handler<LoginUser, LoginUserResponse>
     {
-        private readonly ITokenGenerator _tokenGenerator;
+        private readonly ITokenManager _tokenManager;
         private readonly IUserRepository _userRepository;
 
-        public LoginUserHandler(ITokenGenerator tokenGenerator, IUserRepository userRepository)
+        public LoginUserHandler(ITokenManager tokenManager, IUserRepository userRepository)
         {
-            _tokenGenerator = tokenGenerator;
+            _tokenManager = tokenManager;
             _userRepository = userRepository;
         }
 
@@ -25,7 +25,7 @@ namespace SimpleSplit.Application.Features.Security
             if (!user.CheckPassword(request.Password))
                 return await Failure("Invalid user name or password!");
 
-            var token = _tokenGenerator.CreateToken(user, DateTime.UtcNow);
+            var token = _tokenManager.CreateToken(user, DateTime.UtcNow);
             return new LoginUserResponse
             {
                 User  = user.ToViewModel(),

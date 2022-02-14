@@ -31,6 +31,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="pageSize" example="20">Page size.</param>
         /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information.</param>
         /// <param name="conditions" example='["description|starts|Καθαριότητα"]'>
+        /// <param name="cancellationToken"></param>
         /// Search conditions.
         /// <para>
         /// Conditions are in the form 'property|operator|value'.<br/>
@@ -46,7 +47,8 @@ namespace SimpleSplit.WebApi.Controllers
         public async Task<ActionResult> GetAll([FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = -1,
             [FromQuery] string[] sorting = null,
-            [FromQuery] string[] conditions = null)
+            [FromQuery] string[] conditions = null,
+            CancellationToken cancellationToken = default)
         {
             var searchRequest = new SearchExpenses
             {
@@ -55,7 +57,7 @@ namespace SimpleSplit.WebApi.Controllers
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-            var response = await _mediator.Send(searchRequest);
+            var response = await _mediator.Send(searchRequest, cancellationToken);
             return response.ToActionResult();
         }
 
@@ -63,6 +65,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// Get Expense by ID.
         /// </summary>
         /// <param name="id">Expense ID.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>Requested <see cref="ExpenseViewModel"/></returns>
         /// <response code="200">Returns Expense with requested ID.</response>
         [HttpGet("{id:long}")]
@@ -70,9 +73,9 @@ namespace SimpleSplit.WebApi.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ExpenseViewModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetByID(long id)
+        public async Task<ActionResult> GetByID(long id, CancellationToken cancellationToken = default)
         {
-            var response = await _mediator.Send(new GetExpense { ID = id });
+            var response = await _mediator.Send(new GetExpense { ID = id }, cancellationToken);
             return response.ToActionResult();
         }
 
@@ -95,7 +98,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// </para>
         /// <para>
         /// When posting with `id=0`, a new Expense is created. When `id` is not 0,
-        /// you must also provide `rowVersion` a value for optimistic concurrency.
+        /// you must also provide a `rowVersion` value for optimistic concurrency.
         /// </para>
         /// </remarks>
         /// <response code="200">Expense created or modified</response>
