@@ -32,8 +32,7 @@ namespace SimpleSplit.Application.Features.Expenses
                     .ToList()
             });
             var sorting = _sortingParser.BuildSorting<Expense>(request.SortingDetails);
-            await Task.Delay(2000);
-
+            
             var models = await _repository.Find(specifications, sorting,
                 pageNumber: request.PageNumber,
                 pageSize: request.PageSize,

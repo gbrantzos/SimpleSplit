@@ -44,11 +44,6 @@ try
         .AddInfrastructureServices(builder.Configuration)
         .AddApplicationServices(builder.Configuration);
 
-    // Add services to the container.
-    builder.Services
-        .AddControllers()
-        .AddControllersAsServices();
-
     // Add CORS settings
     var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<Dictionary<string, string>>();
     foreach (var corsKey in corsSettings.Keys)
@@ -59,11 +54,18 @@ try
             {
                 policyBuilder
                     .WithOrigins(corsSettings[corsKey])
+                    .SetIsOriginAllowed(isOriginAllowed: _ => true)
                     .AllowAnyHeader()
+                    .AllowCredentials()
                     .AllowAnyMethod();
             });
         });
     }
+
+    // Add services to the container.
+    builder.Services
+        .AddControllers()
+        .AddControllersAsServices();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -92,6 +94,11 @@ try
         app.UseSwaggerUI(options => options.SetupSwaggerUI());
     }
 
+    corsSettings
+        .Keys
+        .ToList()
+        .ForEach(key => app.UseCors(key));
+    
     app.UseHttpsRedirection();
     app.UseSerilogRequestLogging();
 
@@ -107,10 +114,6 @@ try
     app.UseMetricServer();
     app.UseHttpMetrics();
 
-    corsSettings
-        .Keys
-        .ToList()
-        .ForEach(key => app.UseCors(key));
     app.UseAuthentication();
     app.UseAuthorization();
 
