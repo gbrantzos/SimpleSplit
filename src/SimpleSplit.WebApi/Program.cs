@@ -86,13 +86,8 @@ try
         internalAdmin.Password);
 
     app.UseProblemDetails();
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI(options => options.SetupSwaggerUI());
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI(options => options.SetupSwaggerUI());
 
     corsSettings
         .Keys

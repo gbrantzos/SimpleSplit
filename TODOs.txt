@@ -16,7 +16,6 @@ To avoid problems with ports, reserve them
 - Expenses, array of Expense
 
 API
-
 - GET       /Settlement?params      QuerySettlenets
 - GET       /Settlement/{id}        GetSettlement
 --------------------------------------------------------------------------------
@@ -25,7 +24,6 @@ API
 --------------------------------------------------------------------------------
 Other TODO's
 
-- HiLo implementation for more user friendly IDs
 - Mapster
 - Documentation
 
@@ -44,10 +42,5 @@ Other TODO's
 --------------------------------------------------------------------------------
 WebAPP::Next
 
-- Animations
 - Search ???
-- Authentication ???
-
-https://volve.cc/blog/expense-management-software-features
-https://ckjaersig.dk/2020/05/showing-a-loading-spinner-delayed-with-rxjs/
 --------------------------------------------------------------------------------
