@@ -31,3 +31,6 @@ tmp/
 
 # Rider IDE
 .idea/
+
+# Deploy packs
+*.Deploy.*.zip

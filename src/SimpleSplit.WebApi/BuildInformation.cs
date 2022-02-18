@@ -39,7 +39,7 @@ namespace SimpleSplit.WebApi
                 #if DEBUG
                 IsDebug = true
                 #else
-                IsDebug = false;
+                IsDebug = false
                 #endif
             };
         }

@@ -43,5 +43,10 @@
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 		<Exec Command="pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.PreBuild.ps1" />
 	</Target>
+	
+	<!-- https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/visual-studio-publish-profiles?view=aspnetcore-3.1#run-a-target-before-or-after-publishing -->
+	<Target Name="PostPublish" AfterTargets="AfterPublish">
+		<Exec Command=" pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.AfterPublish.ps1 $(PublishDir)" />
+	</Target>
 
 </Project>

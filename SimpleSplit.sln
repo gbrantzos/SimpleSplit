@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{2A79BF6C-2
 		README.md = README.md
 		SimpleSplit.ruleset = SimpleSplit.ruleset
 		TODOs.txt = TODOs.txt
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Global
