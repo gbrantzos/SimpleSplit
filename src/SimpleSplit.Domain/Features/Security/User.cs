@@ -17,6 +17,9 @@ namespace SimpleSplit.Domain.Features.Security
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }
+        public bool IsActive { get; set; }
+        public bool UseGravatar { get; set; }
+        public string ProfileImagePath { get; set; }
         public string PasswordHash { get; protected set; }
         public string PasswordSalt { get; protected set; }
         public bool PasswordIsReset => String.IsNullOrEmpty(PasswordSalt) || String.IsNullOrEmpty(PasswordHash); 

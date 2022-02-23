@@ -13,6 +13,7 @@ public class UserTypeConfiguration : EntityTypeConfiguration<User, UserID>
     {
         ConfigureBase(builder, "users");
         builder.HasIndex(m => m.Username).IsUnique();
+        builder.HasIndex(m => m.Email).IsUnique();
 
         builder.Property(m => m.Username)
             .HasColumnName("user_name")
@@ -29,5 +30,12 @@ public class UserTypeConfiguration : EntityTypeConfiguration<User, UserID>
         builder.Property(m => m.PasswordSalt)
             .HasColumnName("password_salt")
             .HasMaxLength(100);
+        builder.Property(m => m.UseGravatar)
+            .HasColumnName("use_gravatar");
+        builder.Property(m => m.IsActive)
+            .HasColumnName("is_active");
+        builder.Property(m => m.ProfileImagePath)
+            .HasColumnName("profile_image_path")
+            .HasMaxLength(255);
     }
 }

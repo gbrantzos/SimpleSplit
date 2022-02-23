@@ -67,6 +67,64 @@ namespace SimpleSplit.WebApi.Controllers
             var result = await _mediator.Send(request);
             return result.ToActionResult();
         }
+
+        /// <summary>
+        /// Update user profile
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns></returns>
+        [HttpPost, Route("profile")]
+        [Consumes("multipart/form-data")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SaveProfile([FromForm] Profile profile)
+        {
+            var request = new UpdateUserProfile
+            {
+                UserName    = profile.UserName,
+                DisplayName = profile.DisplayName,
+                Email       = profile.Email,
+                UseGravatar = profile.UseGravatar,
+                FileName    = profile.FileName,
+                Image = profile.Image != null
+                    ? await ImageToByteArray(profile.Image)
+                    : Array.Empty<byte>(),
+                PasswordInfo = profile.PasswordInfo != null
+                    ? new ChangePasswordInfo
+                    {
+                        OldPassword = profile.PasswordInfo?.OldPassword,
+                        NewPassword = profile.PasswordInfo?.NewPassword
+                    }
+                    : null
+            };
+            var response = await _mediator.Send(request);
+            return response.ToActionResult();
+        }
+
+        private async Task<byte[]> ImageToByteArray(IFormFile formFile)
+        {
+            await using var memoryStream = new MemoryStream();
+            await formFile.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
+        }
+    }
+
+    public class Profile
+    {
+        public string UserName { get; set; }
+        public string DisplayName { get; set; }
+        public string Email { get; set; }
+        public string FileName { get; set; }
+        public bool UseGravatar { get; set; }
+        public IFormFile Image { get; set; }
+        public ChangePasswordInfo PasswordInfo { get; set; }
+
+        public class ChangePasswordInfo
+        {
+            public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
+        }
     }
 
     public class LoginUserExamples : IMultipleExamplesProvider<LoginUser>
@@ -77,7 +135,7 @@ namespace SimpleSplit.WebApi.Controllers
             {
                 new SwaggerExample<LoginUser>()
                 {
-                    Name = "normal",
+                    Name    = "normal",
                     Summary = "Simple user",
                     Value = new LoginUser
                     {
@@ -87,7 +145,7 @@ namespace SimpleSplit.WebApi.Controllers
                 },
                 new SwaggerExample<LoginUser>()
                 {
-                    Name = "systemAdmin",
+                    Name    = "systemAdmin",
                     Summary = "Internal Administrator",
                     Value = new LoginUser
                     {
