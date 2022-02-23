@@ -27,7 +27,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Base
                 //if (ex.InnerException is SqlException innerException && innerException.Number == 2601)
                 //{
                 //    var duplicateKeyEx = new DuplicateKeyException(mainEntity?.GetType(),
-                //        "Main entity as JSON", // TODO mainEntity.ToJson(),
+                //        mainEntity.ToJson(),
                 //        innerException.Message,
                 //        $"Duplicate key on update, entity {mainEntity?.GetType().Name}!{Environment.NewLine}{innerException.Message}",
                 //        ex);

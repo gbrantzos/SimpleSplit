@@ -15,6 +15,8 @@ namespace SimpleSplit.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMemoryCache();
+            
             // MediatR
             var assembly = typeof(DependencyInjection).Assembly;
             services.AddMediatR(assembly)

@@ -1,29 +1,27 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using SimpleSplit.Domain.Features.Common;
-using SimpleSplit.Domain.Features.Security;
+using SimpleSplit.Application.Features.Common;
 
 namespace SimpleSplit.WebApi.Controllers
 {
     [ApiController, Route("[controller]"), Authorize]
     public class ImagesController : ControllerBase
     {
-        private static readonly Dictionary<string, Type> KnownTypes =
-            new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
-            {
-                { nameof(User), typeof(User) }
-            };
+        private readonly IMediator _mediator;
+        public ImagesController(IMediator mediator) 
+            => _mediator   = mediator;
 
-        private readonly IImageRepository _imageRepository;
-
-        public ImagesController(IImageRepository imageRepository)
-            => _imageRepository = imageRepository;
-
-        [HttpGet("{entityType:alpha}/{entityID:long}")]
+        [HttpGet("{entityType:alpha}/{entityID:long}"), AllowAnonymous]
         public async Task<IActionResult> GetImage(string entityType, long entityID)
         {
-            var image = await _imageRepository.GetImage(KnownTypes[entityType], entityID);
+            var result = await _mediator.Send(new GetImage
+            {
+                EntityType = entityType,
+                EntityID   = entityID
+            });
+            var image = result.Value;
             if (image == null)
                 return BadRequest();
 

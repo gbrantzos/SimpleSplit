@@ -45,6 +45,11 @@ namespace SimpleSplit.Application.Features.Security
                     .SaveImage<User>(user.ID.Value, request.FileName, request.Image, cancellationToken);
             }
 
+            if (String.IsNullOrEmpty(user.ProfileImagePath))
+            {
+                await _imageRepository.DeleteImage<User>(user.ID.Value, cancellationToken);
+            }
+
             await _unitOfWork.SaveAsync(cancellationToken);
             return true;
         }
