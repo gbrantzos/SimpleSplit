@@ -10,5 +10,12 @@ namespace SimpleSplit.Domain.Features.Security
         /// <param name="userName"></param>
         /// <returns></returns>
         Task<User> FindByUserName(string userName, CancellationToken cancellationToken = default);
+        
+        /// <summary>
+        /// Get a user by email.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<User> FindByEmail(string email, CancellationToken cancellationToken = default);
     }
 }

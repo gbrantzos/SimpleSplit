@@ -39,7 +39,7 @@ namespace SimpleSplit.WebApi.Controllers
         }
 
         /// <summary>
-        /// Change or reset password
+        /// Change or reset password.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -54,7 +54,7 @@ namespace SimpleSplit.WebApi.Controllers
         }
 
         /// <summary>
-        /// Refresh token
+        /// Refresh token.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -69,7 +69,7 @@ namespace SimpleSplit.WebApi.Controllers
         }
 
         /// <summary>
-        /// Update user profile
+        /// Update user profile.
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
@@ -102,6 +102,23 @@ namespace SimpleSplit.WebApi.Controllers
             return response.ToActionResult();
         }
 
+        /// <summary>
+        /// Find user by email.
+        /// </summary>
+        /// <param name="email">E-mail</param>
+        /// <response code="204">User with given email does not exist</response>
+        /// <returns></returns>
+        [HttpGet("by-email/{email}")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "User not found")]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetByEmail([FromRoute] string email)
+        {
+            var response = await _mediator.Send(new SearchUserByEmail { Email = email });
+            return response.ToActionResult();
+        }
+        
         private async Task<byte[]> ImageToByteArray(IFormFile formFile)
         {
             await using var memoryStream = new MemoryStream();

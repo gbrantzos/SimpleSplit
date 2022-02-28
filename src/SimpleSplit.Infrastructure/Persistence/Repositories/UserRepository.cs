@@ -28,5 +28,10 @@ namespace SimpleSplit.Infrastructure.Persistence.Repositories
 
             return await Set.FirstOrDefaultAsync(u => u.Username == userName, cancellationToken);
         }
+
+        public async Task<User> FindByEmail(string email, CancellationToken cancellationToken = default)
+        {
+            return await Set.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
     }
 }
