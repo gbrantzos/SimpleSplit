@@ -23,7 +23,7 @@ namespace SimpleSplit.Application.Services
         public virtual string Display() => $"{Property} {Operator} {Value}";
 
         /// <summary>
-        /// Create a condition from parsing a string. Usefull for reading API query string parameters.
+        /// Create a condition from parsing a string. Useful for reading API query string parameters.
         /// <para>
         /// Examples:
         /// <code>

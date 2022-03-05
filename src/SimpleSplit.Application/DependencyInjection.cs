@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +46,14 @@ namespace SimpleSplit.Application
                 })
                 .AddJwtBearer(options =>
                 {
+                    // options.Events = new JwtBearerEvents()
+                    // {
+                    //     OnTokenValidated = (ctx) =>
+                    //     {
+                    //         ctx.Fail("Bye bye");
+                    //         return Task.CompletedTask;
+                    //     }
+                    // };
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -61,4 +71,5 @@ namespace SimpleSplit.Application
             return services;
         }
     }
+
 }

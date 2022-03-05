@@ -56,8 +56,12 @@ namespace SimpleSplit.Infrastructure.Persistence
             var allEntries = ChangeTracker.Entries<Entity>();
             foreach (var entry in allEntries)
             {
+                // Increase row version
                 if (entry.State == EntityState.Modified || entry.Navigations.Any(n => n.IsModified))
                     entry.Entity.RowVersion++;
+                
+                // Proper initial row version value  
+                if (entry.Entity.RowVersion == 0) entry.Entity.RowVersion = 1;
             }
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

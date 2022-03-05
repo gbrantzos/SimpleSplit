@@ -23,6 +23,7 @@ namespace SimpleSplit.Application.Features.Expenses
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
+        
         protected override async Task<bool> HandleCore(DeleteExpense request, CancellationToken cancellationToken)
         {
             try
@@ -30,7 +31,7 @@ namespace SimpleSplit.Application.Features.Expenses
                 var expenseID = _entityIDFactory.GetID<ExpenseID>(request.ID);
                 var expense = await _repository.GetByID(expenseID, cancellationToken);
                 if (expense == null)
-                    return await Failure("Expense not found! [ID: {request.Id} - Version: {request.RowVersion}]");
+                    return await Failure("Entity not found! [ID: {request.Id} - Version: {request.RowVersion}]");
                 if (expense.RowVersion != request.RowVersion)
                     return await Failure($"Entity changed by other user/process! [ID: {request.ID} - Version: {request.RowVersion}]");
 

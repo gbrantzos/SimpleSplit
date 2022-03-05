@@ -44,9 +44,16 @@ namespace SimpleSplit.Application.Features.Expenses
                 expense.IsOwnerCharge = request.Model.IsOwnerCharge;
                 expense.EnteredAt     = request.Model.EnteredAt;
 
-                var category = categories.FirstOrDefault(c => c.Description.Equals(request.Model.Category, StringComparison.CurrentCultureIgnoreCase));
-                if (category != null)
-                    expense.Category = category;
+                if (request.Model.Category != null)
+                {
+                    var category = categories.FirstOrDefault(c => c.Description.Equals(request.Model.Category, StringComparison.CurrentCultureIgnoreCase));
+                    if (category != null)
+                        expense.Category = category;
+                }
+                else
+                {
+                    expense.Category = null;
+                }
 
                 if (expense.IsNew)
                     _repository.Add(expense);

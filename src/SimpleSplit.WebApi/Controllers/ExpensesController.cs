@@ -103,6 +103,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// </remarks>
         /// <response code="200">Expense created or modified</response>
         /// <response code="400"></response>
+        /// <response code="500"></response>
         [HttpPost]
         public async Task<ActionResult> SaveExpense([FromBody] ExpenseViewModel viewModel)
         {
@@ -125,6 +126,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="request"></param>
         /// <response code="200">Expense deleted</response>
         /// <response code="400"></response>
+        /// <response code="500"></response>
         [HttpDelete]
         public async Task<ActionResult> DeleteExpense([FromBody] DeleteExpense request)
         {
