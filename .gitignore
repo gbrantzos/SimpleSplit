@@ -34,3 +34,4 @@ tmp/
 
 # Deploy packs
 *.Deploy.*.zip
+**/appsettings.Production.json
