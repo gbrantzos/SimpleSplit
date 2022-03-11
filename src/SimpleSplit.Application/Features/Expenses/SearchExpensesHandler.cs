@@ -42,7 +42,7 @@ namespace SimpleSplit.Application.Features.Expenses
             {
                 CurrentPage = request.PageNumber,
                 TotalRows   = totalRows,
-                PageSize    = request.PageSize,
+                PageSize    = request.PageSize <= 0 ? totalRows : request.PageSize,
                 Rows        = models.Select(x => x.ToViewModel()).ToList()
             };
         }

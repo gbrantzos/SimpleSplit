@@ -31,13 +31,13 @@ namespace SimpleSplit.WebApi.Controllers
         /// <param name="pageSize" example="20">Page size.</param>
         /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information.</param>
         /// <param name="conditions" example='["description|starts|Καθαριότητα"]'>
-        /// <param name="cancellationToken"></param>
         /// Search conditions.
         /// <para>
         /// Conditions are in the form 'property|operator|value'.<br/>
         /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends'.
         /// </para>
         /// </param>
+        /// <param name="cancellationToken"></param>
         /// <response code="200">Returns a list of available expenses.</response>
         [HttpGet]
         [SwaggerResponseExample(200, typeof(ExpensesGetAllExamples))]
@@ -53,9 +53,9 @@ namespace SimpleSplit.WebApi.Controllers
             var searchRequest = new SearchExpenses
             {
                 SearchConditions = conditions ?? Array.Empty<string>(),
-                SortingDetails = sorting ?? Array.Empty<string>(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
+                SortingDetails   = sorting ?? Array.Empty<string>(),
+                PageNumber       = pageNumber,
+                PageSize         = pageSize
             };
             var response = await _mediator.Send(searchRequest, cancellationToken);
             return response.ToActionResult();
@@ -143,17 +143,17 @@ namespace SimpleSplit.WebApi.Controllers
             {
                 new ExpenseViewModel
                 {
-                    ID = 1,
+                    ID          = 1,
                     Description = "Καθαριότητα Νοεμβρίου - Δεκεμβρίου",
-                    EnteredAt = new DateTime(2021, 10, 21),
-                    Amount = 116
+                    EnteredAt   = new DateTime(2021, 10, 21),
+                    Amount      = 116
                 },
                 new ExpenseViewModel
                 {
-                    ID = 2,
+                    ID          = 2,
                     Description = "ΔΕΗ Νοεμβρίου - Δεκεμβρίου",
-                    EnteredAt = new DateTime(2021, 10, 15),
-                    Amount = 74
+                    EnteredAt   = new DateTime(2021, 10, 15),
+                    Amount      = 74
                 }
             };
         }
@@ -165,11 +165,11 @@ namespace SimpleSplit.WebApi.Controllers
         {
             return new ExpenseViewModel
             {
-                ID = 12,
-                RowVersion = 1,
-                Description = "Expesne to share",
-                EnteredAt = DateTime.Now,
-                Amount = 60.32m,
+                ID            = 12,
+                RowVersion    = 1,
+                Description   = "Expesne to share",
+                EnteredAt     = DateTime.Now,
+                Amount        = 60.32m,
                 IsOwnerCharge = false,
             };
         }

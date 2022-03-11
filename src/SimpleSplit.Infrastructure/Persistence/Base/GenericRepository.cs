@@ -78,7 +78,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Base
             query = query.Where(criteria.ToExpression());
             var sortedQuery = AddSorting(query, sorting);
 
-            var pagedRequest = pageNumber >= 1 && pageSize >= 0;
+            var pagedRequest = pageNumber >= 1 && pageSize > 0;
             return pagedRequest
                 ? await PagedResults(sortedQuery, pageNumber, pageSize, cancellationToken)
                 : await FullResults(sortedQuery, cancellationToken);

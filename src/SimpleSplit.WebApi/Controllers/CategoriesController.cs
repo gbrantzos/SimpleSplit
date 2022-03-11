@@ -23,20 +23,34 @@ namespace SimpleSplit.WebApi.Controllers
         /// <summary>
         /// Get a list with Category items.
         /// </summary>
+        /// <param name="pageNumber" example="1">Page number.</param>
+        /// <param name="pageSize" example="20">Page size.</param>
+        /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information.</param>
+        /// <param name="conditions" example='["description|starts|Καθαριότητα"]'>
+        /// Search conditions.
+        /// <para>
+        /// Conditions are in the form 'property|operator|value'.<br/>
+        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends'.
+        /// </para>
+        /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PagedResult<>))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAll(
+        public async Task<ActionResult> GetAll([FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = -1,
+            [FromQuery] string[] sorting = null,
+            [FromQuery] string[] conditions = null,
             CancellationToken cancellationToken = default)
         {
             var searchRequest = new SearchCategories()
             {
-                SortingDetails = Array.Empty<string>(),
-                PageNumber     = 1,
-                PageSize       = -1
+                SearchConditions = conditions ?? Array.Empty<string>(),
+                SortingDetails   = sorting ?? Array.Empty<string>(),
+                PageNumber       = pageNumber,
+                PageSize         = pageSize
             };
             var response = await _mediator.Send(searchRequest, cancellationToken);
             return response.ToActionResult();

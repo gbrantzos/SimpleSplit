@@ -17,7 +17,7 @@ namespace SimpleSplit.Application.Base
         /// <summary>
         /// Total number of pages
         /// </summary>
-        public int TotalPages => PageSize == 0 ? 1 : (int)Math.Ceiling((double)TotalRows / (double)PageSize);
+        public int TotalPages => PageSize <= 0 ? 1 : (int)Math.Ceiling((double)TotalRows / (double)PageSize);
 
         /// <summary>
         /// Total number of rows
