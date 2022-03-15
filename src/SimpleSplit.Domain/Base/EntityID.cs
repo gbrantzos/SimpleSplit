@@ -1,6 +1,4 @@
-﻿using IdGen;
-
-namespace SimpleSplit.Domain.Base
+﻿namespace SimpleSplit.Domain.Base
 {
     public abstract class EntityID : ValueObject
     {

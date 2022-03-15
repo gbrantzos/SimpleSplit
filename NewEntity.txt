@@ -1,0 +1,13 @@
+Steps to add support a new entity
+--------------------------------------------------------------------------------
+
+-   Entity and EntityID (domain object)
+-   Repository interface that extends IGenericRepository<Entity, EntityID>
+-   Generic repository for entity
+-   EF type configuration/mapping
+-   ViewModel + mapping to Entity
+-   Base commands and handlers
+        SearchEntity
+        SaveEntity
+        DeleteEntity
+-   Controller
