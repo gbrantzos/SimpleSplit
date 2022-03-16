@@ -34,7 +34,7 @@ namespace SimpleSplit.WebApi.Controllers
         /// Search conditions.
         /// <para>
         /// Conditions are in the form 'property|operator|value'.<br/>
-        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends'.
+        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends', 'in', 'nin'.
         /// </para>
         /// </param>
         /// <param name="cancellationToken"></param>

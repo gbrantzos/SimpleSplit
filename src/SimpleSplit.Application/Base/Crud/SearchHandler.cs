@@ -6,6 +6,7 @@ using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Application.Base.Crud
 {
+    // Ideas from https://tyrrrz.me/blog/fluent-generics
     public static class SearchHandler<TRequest, TResult>
         where TRequest : Request<PagedResult<TResult>>, IPagedRequest
         where TResult : ViewModel
@@ -60,18 +61,5 @@ namespace SimpleSplit.Application.Base.Crud
                 }
             }
         }
-    }
-
-    public class SearchExpensesHandler : SearchHandler<SearchExpenses, ExpenseViewModel>
-        .WithEntityAndID<Expense, ExpenseID>
-        .WithRepository<IExpenseRepository>
-    {
-        private readonly ILogger<SearchExpensesHandler> _logger;
-
-        public SearchExpensesHandler(ILogger<SearchExpensesHandler> logger,
-            IExpenseRepository repository,
-            ISortingParser sortingParser,
-            IConditionParser conditionParser) : base(logger, repository, sortingParser, conditionParser)
-            => _logger = logger;
     }
 }

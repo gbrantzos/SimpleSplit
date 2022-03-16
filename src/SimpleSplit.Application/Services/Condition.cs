@@ -7,18 +7,18 @@ namespace SimpleSplit.Application.Services
         /// <summary>
         /// The property of the condition, case insensitive
         /// </summary>
-        public string Property { get; set; }
+        public string Property { get; init; }
 
         /// <summary>
         /// Operator of the condition.<br/>
-        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends'.
+        /// Supported operators are 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'starts', 'ends', 'in', 'nin'.
         /// </summary>
-        public string Operator { get; set; }
+        public string Operator { get; init; }
 
         /// <summary>
         /// String representation of value for the condition
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; init; }
 
         public virtual string Display() => $"{Property} {Operator} {Value}";
 
@@ -29,6 +29,7 @@ namespace SimpleSplit.Application.Services
         /// <code>
         ///   "amount|gte|50"
         ///   "description|like|Month Expenses"
+        ///   "category.kind|in|2,3"
         /// </code>
         /// </para>
         /// </summary>
@@ -47,7 +48,7 @@ namespace SimpleSplit.Application.Services
             {
                 Property = terms[0],
                 Operator = terms[1],
-                Value = terms[2]
+                Value    = terms[2]
             };
         }
     }
