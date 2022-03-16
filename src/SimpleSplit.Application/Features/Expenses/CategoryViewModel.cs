@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Mapster;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Domain.Features.Expenses;
 
@@ -29,6 +30,16 @@ namespace SimpleSplit.Application.Features.Expenses
                 Description = domainObject.Description,
                 Kind        = (int)domainObject.Kind,
             };
+        }
+    }
+
+    public class CategoryViewModelMapping : IRegister
+    {
+        public void Register(TypeAdapterConfig config)
+        {
+            config.NewConfig<Category, CategoryViewModel>()
+                .Map(dest => dest.ID, src => src.ID.Value)
+                .Map(dest => dest.Kind, src => (int)src.Kind);
         }
     }
 }

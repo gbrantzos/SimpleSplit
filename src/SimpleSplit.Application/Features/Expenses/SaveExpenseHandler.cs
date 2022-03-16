@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Mapster;
+using Microsoft.Extensions.Logging;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Common;
 using SimpleSplit.Domain.Base;
@@ -59,7 +60,7 @@ namespace SimpleSplit.Application.Features.Expenses
                     _repository.Add(expense);
 
                 await _unitOfWork.SaveAsync(cancellationToken);
-                return expense.ToViewModel();
+                return expense.Adapt<ExpenseViewModel>();
             }
             // TODO Specify exception
             catch (Exception ex)

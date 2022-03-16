@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Mapster;
+using Microsoft.Extensions.Logging;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Domain.Exceptions;
 using SimpleSplit.Domain.Features.Expenses;
@@ -24,7 +25,7 @@ namespace SimpleSplit.Application.Features.Expenses
                 var expenseID = new ExpenseID(request.ID);
                 var expense = await _repository.GetByID(expenseID, cancellationToken);
 
-                return expense.ToViewModel();
+                return expense.Adapt<ExpenseViewModel>();
             }
             catch (EntityNotFoundException ex)
             {

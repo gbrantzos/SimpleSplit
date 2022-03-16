@@ -1,8 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using SimpleSplit.Application.Features.Expenses;
-using SimpleSplit.Application.Features.Security;
-using SimpleSplit.Domain.Features.Expenses;
-using SimpleSplit.Domain.Features.Security;
 
 namespace SimpleSplit.Application.Base
 {
@@ -22,16 +18,5 @@ namespace SimpleSplit.Application.Base
 
         [JsonIgnore]
         public bool IsNew => ID == 0 && RowVersion == 0;
-
-        public static TViewModel FromDomainObject<TEntity, TViewModel>(TEntity entity) where TViewModel : ViewModel
-        {
-            return entity switch
-            {
-                Expense exp => exp.ToViewModel() as TViewModel,
-                Category ctg => ctg.ToViewModel() as TViewModel,
-                User usr => usr.ToViewModel() as TViewModel,
-                _ => throw new Exception($"Unknown mapping from {typeof(TEntity).Name}")
-            };
-        }
     }
 }

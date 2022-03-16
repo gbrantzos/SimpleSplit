@@ -1,7 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Reflection;
 using System.Text;
+using Mapster;
+using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace SimpleSplit.Application
 {
     public static class DependencyInjection
     {
+        private static readonly Assembly ThisAssembly = typeof(DependencyInjection).Assembly;
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMemoryCache();
@@ -28,6 +30,12 @@ namespace SimpleSplit.Application
             services.AddTransient<ISortingParser, SortingParser>();
             services.AddTransient<IConditionParser, ConditionParser>();
 
+            // Mapster
+            var config = TypeAdapterConfig.GlobalSettings;
+            services.AddSingleton(config);
+            services.AddScoped<IMapper, ServiceMapper>();
+            config.Scan(ThisAssembly);
+            
             // Security
             services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
             services.AddScoped<JwtOptions>(sp => sp.GetRequiredService<IOptionsSnapshot<JwtOptions>>().Value);

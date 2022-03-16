@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Mapster;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Domain.Features.Expenses;
 
@@ -38,21 +39,14 @@ namespace SimpleSplit.Application.Features.Expenses
         public DateTime? SharedAt { get; set; }
     }
 
-    public static class ExpenseViewModelExtensions
+    public class ExpenseViewModelMapping : IRegister
     {
-        public static ExpenseViewModel ToViewModel(this Expense domainObject)
+        public void Register(TypeAdapterConfig config)
         {
-            return new ExpenseViewModel
-            {
-                ID            = domainObject.ID.Value,
-                RowVersion    = domainObject.RowVersion,
-                Description   = domainObject.Description,
-                Amount        = domainObject.Amount.Amount,
-                EnteredAt     = domainObject.EnteredAt,
-                Category      = domainObject.Category?.Description,
-                IsOwnerCharge = domainObject.IsOwnerCharge,
-                SharedAt      = domainObject.SharedAt,
-            };
+            config.NewConfig<Expense, ExpenseViewModel>()
+                .Map(dest => dest.ID, src => src.ID.Value)
+                .Map(dest => dest.Amount, src => src.Amount.Amount)
+                .Map(dest => dest.Category, src => src.Category == null ? null : src.Category.Description);
         }
     }
 }
