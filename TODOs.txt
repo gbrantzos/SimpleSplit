@@ -19,3 +19,6 @@ API
 - GET       /Settlement?params      QuerySettlenets
 - GET       /Settlement/{id}        GetSettlement
 --------------------------------------------------------------------------------
+
+
+https://devblogs.microsoft.com/dotnet/net-core-image-processing/

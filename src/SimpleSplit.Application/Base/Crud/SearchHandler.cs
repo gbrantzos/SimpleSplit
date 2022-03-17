@@ -17,21 +17,21 @@ namespace SimpleSplit.Application.Base.Crud
             public abstract class WithRepository<TRepository> : Handler<TRequest, PagedResult<TResult>>
                 where TRepository : IRepository<TEntity, TEntityID>
             {
-                private readonly IMapper _mapper;
                 protected readonly TRepository Repository;
                 protected readonly ISortingParser SortingParser;
                 protected readonly IConditionParser ConditionParser;
+                protected readonly IMapper Mapper;
 
-                protected WithRepository(ILogger logger,
-                    IMapper mapper,
-                    TRepository repository,
+                protected WithRepository(TRepository repository,
                     ISortingParser sortingParser,
-                    IConditionParser conditionParser) : base(logger)
+                    IConditionParser conditionParser,
+                    IMapper mapper,
+                    ILogger logger) : base(logger)
                 {
-                    _mapper         = mapper;
                     Repository      = repository;
                     SortingParser   = sortingParser;
                     ConditionParser = conditionParser;
+                    Mapper          = mapper;
                 }
 
                 protected override async Task<PagedResult<TResult>> HandleCore(TRequest request,
@@ -58,7 +58,7 @@ namespace SimpleSplit.Application.Base.Crud
                         CurrentPage = request.PageNumber,
                         TotalRows   = totalRows,
                         PageSize    = request.PageSize <= 0 ? totalRows : request.PageSize,
-                        Rows        = models.Select(r => _mapper.Map<TResult>(r)).ToList()
+                        Rows        = models.Select(r => Mapper.Map<TResult>(r)).ToList()
                     };
                 }
             }

@@ -10,11 +10,11 @@ namespace SimpleSplit.Application.Features.Expenses
         .WithEntityAndID<Expense, ExpenseID>
         .WithRepository<IExpenseRepository>
     {
-        public SearchExpensesHandler(ILogger<SearchExpensesHandler> logger,
-            IMapper mapper,
-            IExpenseRepository repository,
+        public SearchExpensesHandler(IExpenseRepository repository,
             ISortingParser sortingParser,
-            IConditionParser conditionParser) : base(logger, mapper, repository, sortingParser, conditionParser)
+            IConditionParser conditionParser,
+            IMapper mapper,
+            ILogger<SearchExpensesHandler> logger) : base(repository, sortingParser, conditionParser, mapper, logger)
         {
         }
     }

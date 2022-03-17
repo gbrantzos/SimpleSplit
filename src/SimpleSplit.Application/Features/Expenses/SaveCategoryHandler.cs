@@ -1,56 +1,29 @@
-﻿using Microsoft.Extensions.Logging;
-using SimpleSplit.Application.Base;
-using SimpleSplit.Common;
+﻿using MapsterMapper;
+using Microsoft.Extensions.Logging;
+using SimpleSplit.Application.Base.Crud;
 using SimpleSplit.Domain.Base;
 using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Application.Features.Expenses
 {
-    public class SaveCategoryHandler : Handler<SaveCategory, CategoryViewModel>
+    public class SaveCategoryHandler : SaveHandler<SaveCategory, CategoryViewModel>
+        .WithEntityAndID<Category, CategoryID>
+        .WithRepository<ICategoryRepository>
     {
-        private readonly IEntityIDFactory _entityIDFactory;
-        private readonly ICategoryRepository _repository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<SaveCategoryHandler> _logger;
-
-        public SaveCategoryHandler(IEntityIDFactory entityIDFactory,
-            ICategoryRepository categories,
+        public SaveCategoryHandler(ICategoryRepository repository,
             IUnitOfWork unitOfWork,
-            ILogger<SaveCategoryHandler> logger) : base(logger)
+            IEntityIDFactory entityIDFactory,
+            IMapper mapper,
+            ILogger<SaveCategoryHandler> logger) : base(repository, unitOfWork, entityIDFactory, mapper, logger)
         {
-            _entityIDFactory = entityIDFactory;
-            _repository      = categories;
-            _unitOfWork      = unitOfWork;
-            _logger          = logger;
         }
 
-        protected override async Task<CategoryViewModel> HandleCore(SaveCategory request,
-            CancellationToken cancellationToken)
+        protected override Task ApplyChanges(SaveCategory request, Category entity)
         {
-            var category = request.Model.IsNew
-                ? new Category(_entityIDFactory.NextID<CategoryID>())
-                : await _repository.GetByID(new CategoryID(request.Model.ID), cancellationToken);
-            if (category.RowVersion != request.Model.RowVersion)
-                return await Failure(
-                    $"Entity changed by other user/process! [ID: {request.Model.ID} - Request Version: {request.Model.RowVersion}]");
-
-            try
-            {
-                category.Description = request.Model.Description;
-                category.Kind = (Category.CategoryKind)Enum.ToObject(typeof(Category.CategoryKind), request.Model.Kind);
-
-                if (category.IsNew)
-                    _repository.Add(category);
-
-                await _unitOfWork.SaveAsync(cancellationToken);
-                return category.ToViewModel();
-            }
-            // TODO Specify exception
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Concurrency conflict on category save!");
-                return await Failure(ex.GetAllMessages());
-            }
+            entity.Description = request.Model.Description;
+            entity.Kind = (Category.CategoryKind)Enum.ToObject(typeof(Category.CategoryKind), request.Model.Kind);
+            
+            return Task.CompletedTask;
         }
     }
 }

@@ -5,7 +5,7 @@ Steps to add support a new entity
 -   Repository interface that extends IGenericRepository<Entity, EntityID>
 -   Generic repository for entity
 -   EF type configuration/mapping
--   ViewModel + mapping to Entity
+-   ViewModel + mapster setup
 -   Base commands and handlers
         SearchEntity
         SaveEntity
