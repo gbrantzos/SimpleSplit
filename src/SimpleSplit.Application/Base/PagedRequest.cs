@@ -1,4 +1,5 @@
 ﻿using SimpleSplit.Application.Base.Crud;
+using SimpleSplit.Application.Services;
 
 namespace SimpleSplit.Application.Base
 {
@@ -8,5 +9,7 @@ namespace SimpleSplit.Application.Base
         public IEnumerable<string> SortingDetails { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = -1;
+        
+        public ConditionGroup AdvancedSearch { get; set; }
     }
 }

@@ -1,8 +1,11 @@
-﻿using MediatR;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Application.Features.Expenses;
+using SimpleSplit.Application.Services;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -132,6 +135,76 @@ namespace SimpleSplit.WebApi.Controllers
         {
             var response = await _mediator.Send(request) as Result;
             return response.ToActionResult();
+        }
+
+        /// <summary>
+        /// Advanced search of Expense.
+        /// </summary>
+        /// <returns>List of <see cref="ExpenseViewModel"/>.</returns>
+        /// <param name="pageNumber" example="1">Page number.</param>
+        /// <param name="pageSize" example="20">Page size.</param>
+        /// <param name="sorting" example='["-enteredAt","description"]'>Array of sorting information.</param>
+        /// <param name="cancellationToken"></param>
+        /// <response code="200">Returns a list of available expenses.</response>
+        [SwaggerResponseExample(200, typeof(ExpensesGetAllExamples))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PagedResult<ExpenseViewModel>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpPost("advanced-search")]
+        public async Task<ActionResult> GetAll([FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = -1,
+            [FromQuery] string[] sorting = null,
+            CancellationToken cancellationToken = default)
+        {
+            using var reader = new StreamReader(Request.Body);
+            var rawBody = await reader.ReadToEndAsync();
+
+            var rootGroup = ParseConditionGroup(rawBody);
+            var searchRequest = new SearchExpenses
+            {
+                SearchConditions = Array.Empty<string>(),
+                SortingDetails   = sorting ?? Array.Empty<string>(),
+                PageNumber       = pageNumber,
+                PageSize         = pageSize,
+                AdvancedSearch   = rootGroup
+            };
+            var response = await _mediator.Send(searchRequest, cancellationToken);
+            return response.ToActionResult();
+        }
+
+        private static ConditionGroup ParseConditionGroup(string rawBody)
+        {
+            // TODO In the future we must support parsing nested groups!
+            var rootGroup = new ConditionGroup();
+            var options = new JsonDocumentOptions { AllowTrailingCommas = true };
+
+            using var document = JsonDocument.Parse(rawBody, options);
+            foreach (var element in document.RootElement.EnumerateObject())
+            {
+                if (element.Name.Equals(nameof(ConditionGroup.Grouping), StringComparison.CurrentCultureIgnoreCase))
+                    rootGroup.Grouping = Enum.Parse<ConditionGroup.GroupingOperator>(element.Value.ToString(), true);
+                if (element.Name.Equals(nameof(ConditionGroup.Conditions), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // Parse conditions
+                    foreach (var conditionJson in element.Value.EnumerateArray())
+                    {
+                        rootGroup.Conditions.Add(new Condition
+                        {
+                            Property = conditionJson.GetProperty("property").GetString(),
+                            Operator = conditionJson.GetProperty("operator").GetString(),
+                            Value = conditionJson.GetProperty("value").ValueKind == JsonValueKind.Array
+                                ? conditionJson.GetProperty("value")
+                                    .EnumerateArray()
+                                    .Select(i => i.ToString())
+                                    .Aggregate(String.Empty, (curr, next) => curr + "," + next)
+                                    .TrimStart(',')
+                                : conditionJson.GetProperty("value").GetString()
+                        });
+                    }
+                }
+            }
+
+            return rootGroup;
         }
     }
 

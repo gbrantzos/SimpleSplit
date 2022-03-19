@@ -37,14 +37,15 @@ namespace SimpleSplit.Application.Base.Crud
                 protected override async Task<PagedResult<TResult>> HandleCore(TRequest request,
                     CancellationToken cancellationToken)
                 {
-                    var specifications = ConditionParser.BuildSpecifications<TEntity>(new ConditionGroup
+                    var conditions = request.AdvancedSearch ?? new ConditionGroup
                     {
                         Grouping = ConditionGroup.GroupingOperator.And,
                         Conditions = request.SearchConditions
                             .Select(Condition.FromString)
                             .ToList()
-                    });
-
+                    };
+                    
+                    var specifications = ConditionParser.BuildSpecifications<TEntity>(conditions);
                     var sorting = SortingParser.BuildSorting<TEntity>(request.SortingDetails);
 
                     var models = await Repository.Find(specifications, sorting,
