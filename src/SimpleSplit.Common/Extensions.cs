@@ -5,7 +5,7 @@ namespace SimpleSplit.Common
 {
     public static class Extensions
     {
-        public static JsonSerializerOptions DefaultJsonSerializerSettings = new JsonSerializerOptions()
+        private static readonly JsonSerializerOptions DefaultJsonSerializerSettings = new JsonSerializerOptions()
         {
             WriteIndented = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,

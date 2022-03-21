@@ -10,6 +10,7 @@ using SimpleSplit.Application;
 using SimpleSplit.Application.Features.Security;
 using SimpleSplit.Infrastructure;
 using SimpleSplit.Infrastructure.Persistence;
+using SimpleSplit.WebApi;
 using SimpleSplit.WebApi.Swagger;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -46,21 +47,7 @@ try
 
     // Add CORS settings
     var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<Dictionary<string, string>>();
-    foreach (var corsKey in corsSettings.Keys)
-    {
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(corsKey, policyBuilder =>
-            {
-                policyBuilder
-                    .WithOrigins(corsSettings[corsKey])
-                    .SetIsOriginAllowed(isOriginAllowed: _ => true)
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    .AllowAnyMethod();
-            });
-        });
-    }
+    builder.Services.SetupCors(corsSettings);
 
     // Add services to the container.
     builder.Services
@@ -77,23 +64,19 @@ try
     // https://code-maze.com/using-the-problemdetails-class-in-asp-net-core-web-api/
     // https://lurumad.github.io/problem-details-an-standard-way-for-specifying-errors-in-http-api-responses-asp.net-core
     builder.Services.AddProblemDetails();
+    var app = builder.Build();
 
     // Print out internal admin password
-    var app = builder.Build();
     var internalAdmin = app.Services.GetRequiredService<InternalAdministrator>();
     Log.Information("Internal administrator credentials: {InternalAdmin} / {InternalAdminPassword}",
         internalAdmin.UserName,
         internalAdmin.Password);
 
+    // Setup middleware pipeline
     app.UseProblemDetails();
     app.UseSwagger();
     app.UseSwaggerUI(options => options.SetupSwaggerUI());
-
-    corsSettings
-        .Keys
-        .ToList()
-        .ForEach(key => app.UseCors(key));
-    
+    app.UseCors(corsSettings);
     app.UseHttpsRedirection();
     app.UseSerilogRequestLogging();
 
@@ -101,7 +84,7 @@ try
     app.MapGet("database", async (context) =>
     {
         using var scope = context.RequestServices.CreateScope();
-        var db  = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
         var sql = db.Database.GenerateCreateScript();
         await context.Response.WriteAsync(sql);
     });
@@ -130,15 +113,16 @@ finally
 }
 
 static IConfiguration GetConfiguration(string path)
-    => new ConfigurationBuilder()
+{
+    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+    return new ConfigurationBuilder()
         .SetBasePath(path)
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-        .AddJsonFile(
-            $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-            optional: true)
+        .AddJsonFile($"appsettings.{environment}.json", optional: true)
         .AddJsonFile($"appsettings.{Environment.MachineName}.json", optional: true)
         .AddEnvironmentVariables()
         .Build();
+}
 
 // To support tests!
 public partial class Program
@@ -146,9 +130,10 @@ public partial class Program
 #if (DEBUG && WINDOWS)
     [DllImport("user32.dll")]
     private static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
-    private const int HIDE = 0;
+
+    private const int HIDE     = 0;
     private const int MAXIMIZE = 3;
     private const int MINIMIZE = 6;
-    private const int RESTORE = 9;
+    private const int RESTORE  = 9;
 #endif
 }
