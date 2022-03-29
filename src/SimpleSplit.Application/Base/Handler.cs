@@ -7,7 +7,7 @@ namespace SimpleSplit.Application.Base
         where TRequest : Request<TResult>
     {
         private readonly ILogger _logger;
-        private List<string> _errorMessages = new List<string>();
+        private List<string> _errorMessages = new();
 
         protected Handler(ILogger logger = null) => _logger = logger;
 
@@ -16,10 +16,7 @@ namespace SimpleSplit.Application.Base
             try
             {
                 var result = await HandleCore(request, cancellationToken);
-                if (_errorMessages.Count >= 1)
-                    return Result.FromError<TResult>(_errorMessages);
-
-                return result;
+                return _errorMessages.Count > 0 ? Result.FromError<TResult>(_errorMessages) : result;
             }
             catch (Exception x)
             {
@@ -30,7 +27,7 @@ namespace SimpleSplit.Application.Base
 
         protected abstract Task<TResult> HandleCore(TRequest request, CancellationToken cancellationToken);
 
-        protected Task<TResult> Failure(string message) => Failure(new string[] { message });
+        protected Task<TResult> Failure(string message) => Failure(new[] { message });
         protected Task<TResult> Failure(IEnumerable<string> messages)
         {
             _errorMessages = messages.ToList();

@@ -27,10 +27,9 @@ namespace SimpleSplit.Application.Features.Expenses
             expense.Amount        = Money.InEuro(request.Model.Amount);
             expense.IsOwnerCharge = request.Model.IsOwnerCharge;
             expense.EnteredAt     = request.Model.EnteredAt;
-            if (request.Model.Category != null)
+            if (request.Model.CategoryId != 0)
             {
-                var category = categories.FirstOrDefault(c =>
-                    c.Description.Equals(request.Model.Category, StringComparison.CurrentCultureIgnoreCase));
+                var category = categories.FirstOrDefault(c => c.ID.Value == request.Model.CategoryId);
                 if (category != null)
                     expense.Category = category;
             }

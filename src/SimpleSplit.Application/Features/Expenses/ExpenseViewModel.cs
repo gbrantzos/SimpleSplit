@@ -29,6 +29,11 @@ namespace SimpleSplit.Application.Features.Expenses
         public string Category { get; set; }
 
         /// <summary>
+        /// Category ID.
+        /// </summary>
+        public long CategoryId { get; set; }
+
+        /// <summary>
         /// Expense is charged on owner of apartment
         /// </summary>
         public bool IsOwnerCharge { get; set; }
@@ -46,7 +51,8 @@ namespace SimpleSplit.Application.Features.Expenses
             config.NewConfig<Expense, ExpenseViewModel>()
                 .Map(dest => dest.ID, src => src.ID.Value)
                 .Map(dest => dest.Amount, src => src.Amount.Amount)
-                .Map(dest => dest.Category, src => src.Category == null ? null : src.Category.Description);
+                .Map(dest => dest.Category, src => src.Category == null ? null : src.Category.Description)
+                .Map(dest => dest.CategoryId, src => src.Category == null ? 0 : src.Category.ID.Value);
         }
     }
 }

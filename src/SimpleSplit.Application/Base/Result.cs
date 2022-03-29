@@ -13,24 +13,25 @@
             Failure,
             Exception
         }
-        public ResultStatus Status { get; protected set; } = ResultStatus.Success;
+
+        public ResultStatus Status { get; protected init; } = ResultStatus.Success;
         public bool HasErrors => Status != ResultStatus.Success;
 
-        protected List<string> _errors = EmptyList;
-        public IReadOnlyCollection<string> Errors => _errors.AsReadOnly();
-        public string AllErrors(string separator = null)
-            => String.Join(separator ?? Environment.NewLine, _errors);
+        protected List<string> ErrorList = EmptyList;
+        public IReadOnlyCollection<string> Errors => ErrorList.AsReadOnly();
+        public string AllErrors(string separator = null) => String.Join(separator ?? Environment.NewLine, ErrorList);
 
-        public Exception Exception { get; protected set; }
+        public Exception Exception { get; protected init; }
         public bool HasException => Exception is not null;
 
         // We shall not be able to create base class instance from anywhere!
-        protected Result() { }
+        protected Result()
+        {
+        }
 
         // Factory methods
-        private static Result<TData> FromResult<TData>(TData data) => new Result<TData>(data);
+        public static Result<TData> FromError<TData>(string error) => FromError<TData>(new[] { error });
 
-        public static Result<TData> FromError<TData>(string error) => FromError<TData>(new string[] { error });
         public static Result<TData> FromError<TData>(IEnumerable<string> errors)
         {
             var messages = (errors ?? Array.Empty<string>()).Distinct();
@@ -38,6 +39,7 @@
         }
 
         public static Result<TData> FromException<TData>(Exception exception) => FromException<TData>(null, exception);
+
         public static Result<TData> FromException<TData>(string message, Exception exception)
         {
             var errorItems = new List<string>();
@@ -62,13 +64,13 @@
     public sealed class Result<TValue> : Result
     {
         // The actual data returned with response
-        public TValue Value { get; } = default(TValue);
+        public TValue Value { get; }
 
         public Result(TValue value, IEnumerable<string> errors = null, Exception exception = null)
         {
-            Value = value;
+            Value     = value;
             Exception = exception;
-            _errors = (errors ?? Array.Empty<string>()).ToList();
+            ErrorList = (errors ?? Array.Empty<string>()).ToList();
 
             if (errors?.Any() == true)
                 Status = ResultStatus.Failure;
