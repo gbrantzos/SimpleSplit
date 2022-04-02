@@ -172,6 +172,20 @@ namespace SimpleSplit.WebApi.Controllers
             return response.ToActionResult();
         }
 
+        /// <summary>
+        /// Mass update expenses category.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <response code="200">Expenses category updated</response>
+        /// <response code="400"></response>
+        /// <response code="500"></response>
+        [HttpPost("update-category")]
+        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategory request)
+        {
+            var response = await _mediator.Send(request);
+            return response.ToActionResult();
+        }
+
         private static ConditionGroup ParseConditionGroup(string rawBody)
         {
             // TODO In the future we must support parsing nested groups!
