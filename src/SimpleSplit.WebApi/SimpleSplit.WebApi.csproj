@@ -1,52 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<Nullable>disable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<NoWarn>$(NoWarn);1591</NoWarn>
-		<CodeAnalysisRuleSet>..\..\SimpleSplit.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <CodeAnalysisRuleSet>..\..\SimpleSplit.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
 
-	<PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-		<DefineConstants>WINDOWS</DefineConstants>
-	</PropertyGroup>
+    <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+        <DefineConstants>WINDOWS</DefineConstants>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Include="BuildInformation.txt" />
-		<EmbeddedResource Include="Swagger\Themes\*.css" />
-	</ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="BuildInformation.txt"/>
+        <EmbeddedResource Include="Swagger\Themes\*.css"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Autofac" Version="6.3.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
-		<PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.4.0" />
-		<PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
-		<PackageReference Include="Serilog" Version="2.10.0" />
-		<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
-		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-		<PackageReference Include="Serilog.Sinks.Graylog" Version="2.3.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="6.3.0"/>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0"/>
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.4.0"/>
+        <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0"/>
+        <PackageReference Include="Serilog" Version="2.10.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0"/>
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0"/>
+        <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
+        <PackageReference Include="Serilog.Sinks.Graylog" Version="2.3.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2"/>
+    </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\SimpleSplit.Application\SimpleSplit.Application.csproj" />
-	  <ProjectReference Include="..\SimpleSplit.Common\SimpleSplit.Common.csproj" />
-	  <ProjectReference Include="..\SimpleSplit.Infrastructure\SimpleSplit.Infrastructure.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SimpleSplit.Application\SimpleSplit.Application.csproj"/>
+        <ProjectReference Include="..\SimpleSplit.Common\SimpleSplit.Common.csproj"/>
+        <ProjectReference Include="..\SimpleSplit.Infrastructure\SimpleSplit.Infrastructure.csproj"/>
+    </ItemGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.PreBuild.ps1" />
-	</Target>
-	
-	<!-- https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/visual-studio-publish-profiles?view=aspnetcore-3.1#run-a-target-before-or-after-publishing -->
-	<Target Name="PostPublish" AfterTargets="AfterPublish">
-		<Exec Command=" pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.AfterPublish.ps1 $(PublishDir)" />
-	</Target>
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.PreBuild.ps1"/>
+    </Target>
+
+    <!-- https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/visual-studio-publish-profiles?view=aspnetcore-3.1#run-a-target-before-or-after-publishing -->
+    <Target Name="PostPublish" AfterTargets="AfterPublish">
+        <Exec Command=" pwsh -NoProfile -ExecutionPolicy ByPass -File SimpleSplit.WebApi.AfterPublish.ps1 $(PublishDir)"/>
+    </Target>
 
 </Project>

@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Autofac.Extensions.DependencyInjection;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +11,6 @@ using SimpleSplit.Infrastructure.Persistence;
 using SimpleSplit.WebApi;
 using SimpleSplit.WebApi.Swagger;
 using Swashbuckle.AspNetCore.Filters;
-
-// God knows why debug terminal starts minimized!
-#if (DEBUG && WINDOWS)
-if (Debugger.IsAttached)
-{
-    var p = Process.GetCurrentProcess();
-    ShowWindow(p.MainWindowHandle, RESTORE);
-}
-#endif
 
 // Prepare logging path and configuration
 var binPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? String.Empty;
@@ -55,9 +44,10 @@ try
         .AddControllersAsServices();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(options => options.SetupSwagger());
-    builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+    builder.Services
+        .AddEndpointsApiExplorer()
+        .AddSwaggerGen(options => options.SetupSwagger())
+        .AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
     // Using problem details
     // This middleware provides room for customization
@@ -73,12 +63,17 @@ try
         internalAdmin.Password);
 
     // Setup middleware pipeline
-    app.UseProblemDetails();
-    app.UseSwagger();
-    app.UseSwaggerUI(options => options.SetupSwaggerUI());
-    app.UseCors(corsSettings);
-    app.UseHttpsRedirection();
-    app.UseSerilogRequestLogging();
+    app.UseSwagger()
+        .UseSwaggerUI(options => options.SetupSwaggerUI())
+        .UseProblemDetails()
+        .UseCors(corsSettings)
+        .UseHttpsRedirection()
+        .UseMetricServer()
+        .UseHttpMetrics()
+        .UseSerilogRequestLogging();    
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.MapControllers();
     app.MapGet("database", async (context) =>
@@ -88,12 +83,6 @@ try
         var sql = db.Database.GenerateCreateScript();
         await context.Response.WriteAsync(sql);
     });
-
-    app.UseMetricServer();
-    app.UseHttpMetrics();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
 
     // Please note that there is a bug in minimal APIs!!
     // https://github.com/dotnet/aspnetcore/issues/38185
@@ -124,16 +113,5 @@ static IConfiguration GetConfiguration(string path)
         .Build();
 }
 
-// To support tests!
-public partial class Program
-{
-#if (DEBUG && WINDOWS)
-    [DllImport("user32.dll")]
-    private static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
-
-    private const int HIDE     = 0;
-    private const int MAXIMIZE = 3;
-    private const int MINIMIZE = 6;
-    private const int RESTORE  = 9;
-#endif
-}
+// To support integration tests
+public partial class Program { }
