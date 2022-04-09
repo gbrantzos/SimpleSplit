@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleSplit.Domain.Base;
+using SimpleSplit.Domain.Features.Buildings;
 using SimpleSplit.Domain.Features.Common;
 using SimpleSplit.Domain.Features.Expenses;
 using SimpleSplit.Infrastructure.Persistence.Configuration;
@@ -20,7 +21,8 @@ namespace SimpleSplit.Infrastructure.Persistence
 
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Image> Images { get; set; } 
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Building> Buildings { get; set; }
 
         public SimpleSplitDbContext(DbContextOptions<SimpleSplitDbContext> options,
             IEnumerable<EntityTypeConfiguration> entityTypeConfigurations)

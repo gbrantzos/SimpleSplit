@@ -19,7 +19,7 @@ namespace SimpleSplit.Domain.Features.Expenses
         public bool IsOwnerCharge { get; set; }
         public DateTime? SharedAt { get; set; }
 
-        public Expense(ExpenseID id) => ID = id;
+        public Expense(ExpenseID id): base(id) { }
         protected Expense() { }
     }
 }

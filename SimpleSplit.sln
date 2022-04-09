@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{2A79BF6C-2
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSplit.UnitTests", "tests\SimpleSplit.UnitTests\SimpleSplit.UnitTests.csproj", "{88D90299-51BD-496F-A65B-CFD9952E3EB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D90299-51BD-496F-A65B-CFD9952E3EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D90299-51BD-496F-A65B-CFD9952E3EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D90299-51BD-496F-A65B-CFD9952E3EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D90299-51BD-496F-A65B-CFD9952E3EB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{DAD62231-A135-4F27-AC30-67C9851AAA4C} = {8E13394D-A542-4F82-8F79-3E34E647D010}
 		{74402467-E508-4BC4-AE6A-ED76CC507814} = {8E13394D-A542-4F82-8F79-3E34E647D010}
 		{2F8AFE90-6286-4D83-9D06-4CCF1D1AF9C6} = {8E13394D-A542-4F82-8F79-3E34E647D010}
+		{88D90299-51BD-496F-A65B-CFD9952E3EB5} = {B3ECE0FF-B3DB-419B-9736-8FD80DF0689C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CED5A7C5-4C7F-48FC-B93C-F9CFC8E98503}

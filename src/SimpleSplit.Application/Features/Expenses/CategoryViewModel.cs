@@ -19,20 +19,6 @@ namespace SimpleSplit.Application.Features.Expenses
         public int Kind { get; set; }
     }
 
-    public static class CategoryViewModelExtensions
-    {
-        public static CategoryViewModel ToViewModel(this Category domainObject)
-        {
-            return new CategoryViewModel
-            {
-                ID          = domainObject.ID.Value,
-                RowVersion  = domainObject.RowVersion,
-                Description = domainObject.Description,
-                Kind        = (int)domainObject.Kind,
-            };
-        }
-    }
-
     public class CategoryViewModelMapping : IRegister
     {
         public void Register(TypeAdapterConfig config)

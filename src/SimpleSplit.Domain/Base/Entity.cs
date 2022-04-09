@@ -10,5 +10,11 @@
         public abstract TKey ID { get; protected set; }
 
         public bool IsNew => RowVersion == 0;
+
+        protected Entity(TKey id)
+        {
+            ID = id;
+        }
+        protected Entity() { }
     }
 }

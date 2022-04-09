@@ -21,7 +21,7 @@ namespace SimpleSplit.Domain.Features.Expenses
         public string Description { get; set; }
         public CategoryKind Kind { get; set; }
 
-        public Category(CategoryID id) => ID = id;
+        public Category(CategoryID id) : base(id) { }
         protected Category() { }
     }
 }
