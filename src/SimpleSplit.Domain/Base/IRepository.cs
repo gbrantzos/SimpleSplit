@@ -1,4 +1,4 @@
-﻿using SimpleSplit.Domain.Exceptions;
+﻿using SimpleSplit.Domain.Base.Exceptions;
 
 namespace SimpleSplit.Domain.Base
 {

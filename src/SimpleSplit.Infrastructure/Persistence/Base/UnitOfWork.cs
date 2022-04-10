@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleSplit.Domain.Base;
-using SimpleSplit.Domain.Exceptions;
 using SimpleSplit.Infrastructure.Persistence;
 
 namespace SimpleSplit.Infrastructure.Persistence.Base

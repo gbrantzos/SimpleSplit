@@ -1,7 +1,6 @@
 ﻿using SimpleSplit.Common;
-using SimpleSplit.Domain.Base;
 
-namespace SimpleSplit.Domain.Exceptions
+namespace SimpleSplit.Domain.Base.Exceptions
 {
     public class EntityNotFoundException : Exception
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SimpleSplit.Domain.Exceptions
+﻿namespace SimpleSplit.Domain.Base.Exceptions
 {
     public class DuplicateKeyException : Exception
     {

@@ -16,3 +16,19 @@ API
 
 
 https://devblogs.microsoft.com/dotnet/net-core-image-processing/
+
+
+Building history (to become more generic...)
+================================================================================
+
+- id
+- entity/table
+- entityID/key
+- changedAt
+- oldValue
+- newValue
+indexed by table/key
+
+interface ISupportsHistory
+-- AddChange(entity (?), key, old value, new value)
+-- GetAllChanges (to be used by SaveAsync)

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SimpleSplit.Common;
 using SimpleSplit.Domain.Base;
-using SimpleSplit.Domain.Exceptions;
+using SimpleSplit.Domain.Base.Exceptions;
 
 namespace SimpleSplit.Infrastructure.Persistence.Base
 {

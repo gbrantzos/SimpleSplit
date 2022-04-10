@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Logging;
 using SimpleSplit.Application.Base;
-using SimpleSplit.Domain.Exceptions;
+using SimpleSplit.Domain.Base.Exceptions;
 using SimpleSplit.Domain.Features.Expenses;
 
 namespace SimpleSplit.Application.Features.Expenses

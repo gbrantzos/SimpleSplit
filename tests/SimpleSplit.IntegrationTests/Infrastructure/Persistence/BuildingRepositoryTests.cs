@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SimpleSplit.Domain.Base;
-using SimpleSplit.Domain.Exceptions;
+using SimpleSplit.Domain.Base.Exceptions;
 using SimpleSplit.Domain.Features.Buildings;
 using SimpleSplit.Domain.Features.Expenses;
 using SimpleSplit.Infrastructure.Persistence;
