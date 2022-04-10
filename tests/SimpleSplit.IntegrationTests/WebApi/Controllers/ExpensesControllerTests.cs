@@ -72,6 +72,8 @@ namespace SimpleSplit.IntegrationTests.WebApi.Controllers
             response.RowVersion.Should().Be(1);
             response.IsNew.Should().BeFalse();
 
+            // TODO Consider using the following
+            // https://timdeschryver.dev/blog/how-to-test-your-csharp-web-api#testing-multiple-endpoints-at-once-parameterized-xunit-tests
             var existingRequest = await _client.GetAsync($"/Expenses/{response.ID}");
             existingRequest.EnsureSuccessStatusCode();
             var existing =
