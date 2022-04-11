@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -8,10 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using SimpleSplit.Application.Features.Security;
+using Xunit;
 
 namespace SimpleSplit.IntegrationTests
 {
-    public class SimpleSplitWebApplicationFactory : WebApplicationFactory<Program>
+    // Use IAsyncLifetime to properly retrieve a JWT token
+    // https://mderriey.com/2017/09/04/async-lifetime-with-xunit/
+
+    public class SimpleSplitWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         private string? _token = null;
 
@@ -26,13 +31,15 @@ namespace SimpleSplit.IntegrationTests
             return base.CreateHost(builder);
         }
 
-        public async Task<string> GetJwtToken()
+        protected override void ConfigureClient(HttpClient client)
         {
-            // TODO Check the following
-            // https://bartwullems.blogspot.com/2019/09/xunit-async-lifetime.html
-            if (!String.IsNullOrEmpty(_token))
-                return _token;
+            base.ConfigureClient(client);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        }
 
+        #region IAsyncLifetime implementation
+        public async Task InitializeAsync()
+        {
             var internalAdmin = Services.GetRequiredService<InternalAdministrator>();
             var request = new LoginUser
             {
@@ -48,7 +55,9 @@ namespace SimpleSplit.IntegrationTests
                 ?? throw new Exception("Could not get user login response");
 
             _token = loginResponse.Token;
-            return _token;
         }
+
+        Task IAsyncLifetime.DisposeAsync() => Task.CompletedTask;
+        #endregion
     }
 }
