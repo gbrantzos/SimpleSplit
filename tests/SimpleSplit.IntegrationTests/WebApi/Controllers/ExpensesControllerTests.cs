@@ -2,9 +2,9 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Newtonsoft.Json;
 using SimpleSplit.Application.Base;
 using SimpleSplit.Application.Features.Expenses;
 using Xunit;
@@ -78,7 +78,7 @@ namespace SimpleSplit.IntegrationTests.WebApi.Controllers
             {
                 Method     = HttpMethod.Delete,
                 RequestUri = new Uri("Expenses", UriKind.Relative),
-                Content = new StringContent(JsonConvert.SerializeObject(new
+                Content = new StringContent(JsonSerializer.Serialize(new
                 {
                     updated.ID,
                     updated.RowVersion

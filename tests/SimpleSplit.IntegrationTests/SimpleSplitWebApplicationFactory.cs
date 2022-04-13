@@ -2,12 +2,12 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using SimpleSplit.Application.Features.Security;
 using Xunit;
 
@@ -46,12 +46,11 @@ namespace SimpleSplit.IntegrationTests
                 UserName = internalAdmin.UserName,
                 Password = internalAdmin.Password
             };
-            var rawBody = new StringContent(JsonConvert.SerializeObject(request), Encoding.Default, "application/json");
+            var rawBody = new StringContent(JsonSerializer.Serialize(request), Encoding.Default, "application/json");
             var response = await CreateClient().PostAsync("/users", rawBody);
             response.EnsureSuccessStatusCode();
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var loginResponse = JsonConvert.DeserializeObject<LoginUserResponse>(responseContent)
+            var loginResponse = await response.ReadAsAsync<LoginUserResponse>()
                 ?? throw new Exception("Could not get user login response");
 
             _token = loginResponse.Token;
