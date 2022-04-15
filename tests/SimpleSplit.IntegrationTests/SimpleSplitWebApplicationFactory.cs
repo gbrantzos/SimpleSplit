@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleSplit.Application.Features.Security;
@@ -30,6 +31,7 @@ namespace SimpleSplit.IntegrationTests
         {
             return base.CreateHost(builder);
         }
+        
 
         protected override void ConfigureClient(HttpClient client)
         {

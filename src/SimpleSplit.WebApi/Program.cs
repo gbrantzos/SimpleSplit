@@ -35,8 +35,7 @@ try
         .AddApplicationServices(builder.Configuration);
 
     // Add CORS settings
-    var corsSettings = builder.Configuration.GetSection("CorsSettings").Get<Dictionary<string, string>>();
-    builder.Services.SetupCors(corsSettings);
+    builder.Services.SetupCors(builder.Configuration);
 
     // Add services to the container.
     builder.Services
@@ -63,25 +62,31 @@ try
         internalAdmin.Password);
 
     // Setup middleware pipeline
-    app.UseSwagger()
-        .UseSwaggerUI(options => options.SetupSwaggerUI())
-        .UseProblemDetails()
-        .UseCors(corsSettings)
-        .UseHttpsRedirection()
-        .UseMetricServer()
-        .UseHttpMetrics()
-        .UseSerilogRequestLogging();    
+    app.UseProblemDetails();
+    app.UseSwagger().UseSwaggerUI(options => options.SetupSwaggerUI());
 
+    // Setup CORS
+    app.UseCors(configuration);
+    
+    app.UseMetricServer()
+        .UseHttpMetrics()
+        .UseSerilogRequestLogging();
+
+    app.UseRouting();
+    
     app.UseAuthentication();
     app.UseAuthorization();
 
-    app.MapControllers();
-    app.MapGet("database", async (context) =>
+    app.UseEndpoints(endpoints =>
     {
-        using var scope = context.RequestServices.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
-        var sql = db.Database.GenerateCreateScript();
-        await context.Response.WriteAsync(sql);
+        endpoints.MapControllers();
+        endpoints.Map("database", async (context) =>
+        {
+            using var scope = context.RequestServices.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
+            var sql = db.Database.GenerateCreateScript();
+            await context.Response.WriteAsync(sql);
+        });
     });
 
     // Please note that there is a bug in minimal APIs!!
@@ -91,9 +96,6 @@ try
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application start-up failed");
-#if DEBUG
-    Console.ReadKey(false);
-#endif
 }
 finally
 {
