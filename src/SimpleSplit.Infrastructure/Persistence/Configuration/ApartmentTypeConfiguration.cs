@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleSplit.Domain.Base;
@@ -20,8 +19,8 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
                 .HasColumnName("code")
                 .HasMaxLength(20)
                 .IsRequired();
-            builder.Property(a => a.Floor)
-                .HasColumnName("floor")
+            builder.Property(a => a.SortingNum)
+                .HasColumnName("sorting_num")
                 .HasMaxLength(100)
                 .IsRequired();
             builder.Property(a => a.Owner)

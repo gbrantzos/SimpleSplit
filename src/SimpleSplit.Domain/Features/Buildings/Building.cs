@@ -4,8 +4,13 @@ namespace SimpleSplit.Domain.Features.Buildings
 {
     public class BuildingID : EntityID
     {
-        public BuildingID(long id) : base(id) { }
-        public BuildingID() : base(0) { }
+        public BuildingID(long id) : base(id)
+        {
+        }
+
+        public BuildingID() : base(0)
+        {
+        }
     }
 
     public class Building : Entity<BuildingID>
@@ -18,7 +23,13 @@ namespace SimpleSplit.Domain.Features.Buildings
 
         public IReadOnlyCollection<Apartment> Apartments => _apartments.AsReadOnly();
 
-        protected Building() { }
+        protected Building()
+        {
+        }
+
+        public Building(BuildingID id) : this(id, Address.Empty(), Enumerable.Empty<Apartment>())
+        {
+        }
 
         public Building(BuildingID id, Address address, IEnumerable<Apartment> apartments) : base(id)
         {
@@ -40,13 +51,19 @@ namespace SimpleSplit.Domain.Features.Buildings
         public void RemoveApartment(Apartment apartment)
         {
             var existing = _apartments.SingleOrDefault(i => i.ID == apartment.ID)
-                ?? throw new ArgumentException($"Apartment with ID {apartment.ID} does not belong to building!");
+                           ?? throw new ArgumentException(
+                               $"Apartment with ID {apartment.ID} does not belong to building!");
             _apartments.Remove(existing);
         }
 
+        public Apartment FindApartmentByID(ApartmentID apartmentID)
+        {
+            return _apartments.SingleOrDefault(i => i.ID == apartmentID)
+                   ?? throw new ArgumentException($"Apartment with ID {apartmentID} does not belong to building!");
+        }
 
-        public static Building ForTests() => new Building
-        (
+
+        public static Building ForTests() => new Building(
             new BuildingID(-1),
             new Address("Giannitson", "23", "Athens", "11363"),
             new List<Apartment>
@@ -59,9 +76,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "Ισόγειο",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 35.70 },
-                        { Expenses.Category.CategoryKind.Elevator, 0.00 },
-                        { Expenses.Category.CategoryKind.Shared, 35.70 }
+                        {Expenses.Category.CategoryKind.Heating, 0.0357},
+                        {Expenses.Category.CategoryKind.Elevator, 0.00},
+                        {Expenses.Category.CategoryKind.Shared, 0.0357}
                     }),
                 new Apartment(
                     new ApartmentID(-2),
@@ -71,9 +88,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "Ισόγειο",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 84.50 },
-                        { Expenses.Category.CategoryKind.Elevator, 0.00 },
-                        { Expenses.Category.CategoryKind.Shared, 84.50 }
+                        {Expenses.Category.CategoryKind.Heating, 0.0845},
+                        {Expenses.Category.CategoryKind.Elevator, 0.00},
+                        {Expenses.Category.CategoryKind.Shared, 0.845}
                     }),
                 new Apartment(
                     new ApartmentID(-3),
@@ -83,9 +100,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "1ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 217.90 },
-                        { Expenses.Category.CategoryKind.Elevator, 99.20 },
-                        { Expenses.Category.CategoryKind.Shared, 217.90 }
+                        {Expenses.Category.CategoryKind.Heating, 0.2179},
+                        {Expenses.Category.CategoryKind.Elevator, 0.0992},
+                        {Expenses.Category.CategoryKind.Shared, 0.2179}
                     }),
                 new Apartment(
                     new ApartmentID(-4),
@@ -95,9 +112,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "2ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 100.80 },
-                        { Expenses.Category.CategoryKind.Elevator, 91.80 },
-                        { Expenses.Category.CategoryKind.Shared, 100.80 }
+                        {Expenses.Category.CategoryKind.Heating, 0.1008},
+                        {Expenses.Category.CategoryKind.Elevator, 0.0918},
+                        {Expenses.Category.CategoryKind.Shared, 0.1008}
                     }),
                 new Apartment(
                     new ApartmentID(-5),
@@ -107,9 +124,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "2ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 122.00 },
-                        { Expenses.Category.CategoryKind.Elevator, 111.00 },
-                        { Expenses.Category.CategoryKind.Shared, 122.00 }
+                        {Expenses.Category.CategoryKind.Heating, 0.0122},
+                        {Expenses.Category.CategoryKind.Elevator, 0.0111},
+                        {Expenses.Category.CategoryKind.Shared, 0.0122}
                     }),
                 new Apartment(
                     new ApartmentID(-6),
@@ -119,9 +136,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "3ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 100.80 },
-                        { Expenses.Category.CategoryKind.Elevator, 137.70 },
-                        { Expenses.Category.CategoryKind.Shared, 100.80 }
+                        {Expenses.Category.CategoryKind.Heating, 0.1008},
+                        {Expenses.Category.CategoryKind.Elevator, 0.1377},
+                        {Expenses.Category.CategoryKind.Shared, 0.1008}
                     }),
                 new Apartment(
                     new ApartmentID(-7),
@@ -131,9 +148,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "3ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 122.00 },
-                        { Expenses.Category.CategoryKind.Elevator, 166.60 },
-                        { Expenses.Category.CategoryKind.Shared, 122.00 }
+                        {Expenses.Category.CategoryKind.Heating, 0.1220},
+                        {Expenses.Category.CategoryKind.Elevator, 0.1666},
+                        {Expenses.Category.CategoryKind.Shared, 0.1220}
                     }),
                 new Apartment(
                     new ApartmentID(-8),
@@ -143,9 +160,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "4ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 141.50 },
-                        { Expenses.Category.CategoryKind.Elevator, 257.50 },
-                        { Expenses.Category.CategoryKind.Shared, 141.50 }
+                        {Expenses.Category.CategoryKind.Heating, 0.1415},
+                        {Expenses.Category.CategoryKind.Elevator, 0.2575},
+                        {Expenses.Category.CategoryKind.Shared, 0.1415}
                     }),
                 new Apartment(
                     new ApartmentID(-9),
@@ -155,9 +172,9 @@ namespace SimpleSplit.Domain.Features.Buildings
                     "5ος",
                     new Dictionary<Expenses.Category.CategoryKind, double>
                     {
-                        { Expenses.Category.CategoryKind.Heating, 74.80 },
-                        { Expenses.Category.CategoryKind.Elevator, 136.20 },
-                        { Expenses.Category.CategoryKind.Shared, 74.80 }
+                        {Expenses.Category.CategoryKind.Heating, 0.0748},
+                        {Expenses.Category.CategoryKind.Elevator, 0.1362},
+                        {Expenses.Category.CategoryKind.Shared, 0.0748}
                     })
             })
         {

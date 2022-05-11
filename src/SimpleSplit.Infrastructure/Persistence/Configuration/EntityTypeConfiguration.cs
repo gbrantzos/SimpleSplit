@@ -40,6 +40,7 @@ namespace SimpleSplit.Infrastructure.Persistence.Configuration
         protected void AddCommonColumn(EntityTypeBuilder<TEntity> builder)
         {
             builder.Property(e => e.RowVersion)
+                .IsConcurrencyToken()
                 .HasColumnOrder(-19)
                 .HasColumnName(SimpleSplitDbContext.RowVersion);
             builder.Property<DateTime>(SimpleSplitDbContext.CreatedAt).HasColumnOrder(-12);

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SimpleSplit.Common;
 using SimpleSplit.Domain.Base;
+using SimpleSplit.Domain.Base.Exceptions;
 
 namespace SimpleSplit.Application.Base.Crud
 {
@@ -38,33 +39,32 @@ namespace SimpleSplit.Application.Base.Crud
                 protected override async Task<TResult> HandleCore(TRequest request, CancellationToken cancellationToken)
                 {
                     var entity = request.Model.IsNew
-                        ? (TEntity)InstanceFactory.CreateInstance(typeof(TEntity), EntityIDFactory.NextID<TEntityID>())
-                        : await Repository.GetByID((TEntityID)InstanceFactory.CreateInstance(
+                        ? (TEntity) InstanceFactory.CreateInstance(typeof(TEntity), EntityIDFactory.NextID<TEntityID>())
+                        : await Repository.GetByID((TEntityID) InstanceFactory.CreateInstance(
                                 typeof(TEntityID),
                                 request.Model.ID),
                             cancellationToken);
                     if (entity.RowVersion != request.Model.RowVersion)
-                        return await Failure(
-                            $"Entity changed by other user/process! [ID: {request.Model.ID} - Request Version: {request.Model.RowVersion}]");
+                        throw new ConcurrencyConflictException(entity, entity.ID, request.Model.RowVersion);
+
                     try
                     {
                         await ApplyChanges(request, entity);
                         if (entity.IsNew)
                             Repository.Add(entity);
-                        
+
                         await UnitOfWork.SaveAsync(cancellationToken);
                         return Mapper.Map<TResult>(entity);
                     }
-                    // TODO Specify exception
-                    catch (Exception ex)
+                    catch (ConcurrencyConflictException cx)
                     {
-                        Logger.LogError(ex, "Concurrency conflict on category save!");
-                        return await Failure(ex.GetAllMessages());
+                        Logger.LogError(cx, $"Concurrency conflict on {typeof(TEntity).Name} save!");
+                        return await Failure(cx.Message);
                     }
                 }
 
                 /// <summary>
-                /// The method that "updates" the enttty (Domain Object) with values from the presentation layer.
+                /// The method that "updates" the entity (Domain Object) with values from the presentation layer.
                 /// </summary>
                 /// <param name="request">The full request</param>
                 /// <param name="entity">The entity, created or fetched from storage</param>

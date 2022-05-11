@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using SimpleSplit.Common;
 using SimpleSplit.Domain.Base;
+using SimpleSplit.Domain.Base.Exceptions;
 
 namespace SimpleSplit.Application.Base.Crud
 {
@@ -36,24 +36,21 @@ namespace SimpleSplit.Application.Base.Crud
                     try
                     {
                         var entityID = EntityIDFactory.GetID<TEntityID>(request.ID);
-                        var expense = await Repository.GetByID(entityID, cancellationToken);
-                        if (expense == null)
+                        var entity = await Repository.GetByID(entityID, cancellationToken);
+                        if (entity == null)
                             return await Failure(
                                 "Entity not found! [ID: {request.Id} - Version: {request.RowVersion}]");
-                        if (expense.RowVersion != request.RowVersion)
-                            return await Failure(
-                                $"Entity changed by other user/process! [ID: {request.ID} - Version: {request.RowVersion}]");
+                        if (entity.RowVersion != request.RowVersion)
+                            throw new ConcurrencyConflictException(entity, entity.ID, request.RowVersion);
 
-                        Repository.Delete(expense);
+                        Repository.Delete(entity);
                         await UnitOfWork.SaveAsync(cancellationToken);
                         return true;
                     }
-                    // TODO Specify exception
-                    catch (Exception ex)
+                    catch (ConcurrencyConflictException cx)
                     {
-                        Logger.LogError(ex, "DeleteExpense failed!");
-                        return await Failure(
-                            $"Could not delete expense with ID {request.ID}\\r\\n{ex.GetAllMessages()}");
+                        Logger.LogError(cx, $"Concurrency conflict on {typeof(TEntity).Name} delete!");
+                        return await Failure(cx.Message);
                     }
                 }
             }

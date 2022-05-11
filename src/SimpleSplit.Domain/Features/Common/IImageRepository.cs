@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="entityType">Entity type</param>
         /// <param name="entityID">Entity ID (as long)</param>
-        /// <param name="token">Cancellation token</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Image> GetImage(Type entityType, long entityID, CancellationToken cancellationToken = default);
 
@@ -18,7 +18,7 @@
         /// <param name="entityID"></param>
         /// <param name="filename"></param>
         /// <param name="content"></param>
-        /// <param name="token"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task SaveImage(Type entityType, long entityID, string filename, byte[] content,
             CancellationToken cancellationToken = default);
@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="entityType"></param>
         /// <param name="entityID"></param>
-        /// <param name="token"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task DeleteImage(Type entityType, long entityID, CancellationToken cancellationToken = default);
     }

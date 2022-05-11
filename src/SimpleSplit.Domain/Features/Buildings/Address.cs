@@ -27,5 +27,8 @@ namespace SimpleSplit.Domain.Features.Buildings
             yield return ZipCode;
             yield return City;
         }
+
+        public static Address Empty()
+            => new Address(String.Empty, String.Empty, String.Empty, String.Empty);
     }
 }

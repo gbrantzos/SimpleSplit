@@ -67,26 +67,35 @@ try
 
     // Setup CORS
     app.UseCors(configuration);
-    
+
     app.UseMetricServer()
         .UseHttpMetrics()
         .UseSerilogRequestLogging();
 
     app.UseRouting();
-    
+
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
-        endpoints.Map("database", async (context) =>
-        {
-            using var scope = context.RequestServices.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
-            var sql = db.Database.GenerateCreateScript();
-            await context.Response.WriteAsync(sql);
-        });
+        endpoints.Map("database",
+            async (context) =>
+            {
+                using var scope = context.RequestServices.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<SimpleSplitDbContext>();
+                var sql = db.Database.GenerateCreateScript();
+                await context.Response.WriteAsync(sql);
+            });
+        // Based on
+        // https://andrewlock.net/debugging-configuration-values-in-aspnetcore/
+        endpoints.Map("config",
+            async context =>
+            {
+                var config = builder.Configuration.GetDebugView();
+                await context.Response.WriteAsync(config);
+            });
     });
 
     // Please note that there is a bug in minimal APIs!!
@@ -116,4 +125,6 @@ static IConfiguration GetConfiguration(string path)
 }
 
 // To support integration tests
-public partial class Program { }
+public partial class Program
+{
+}
