@@ -25,7 +25,7 @@ namespace SimpleSplit.WebApi.Swagger
         public IActionResult GetTheme([FromQuery] string themeName = "muted")
         {
             var css = Themes.Contains(themeName)
-                ? EmbeddedResourceManager.GetText(Assembly, ResourceRoot, $"theme-{themeName}.css")
+                ? EmbeddedResourceManager.GetText(Assembly, ResourceRoot, $"theme-{themeName}.min.css")
                 : string.Empty;
             return Content(css, "text/css");
         }

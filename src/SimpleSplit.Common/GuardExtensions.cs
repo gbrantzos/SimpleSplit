@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
 
 namespace SimpleSplit.Common
 {
@@ -11,7 +11,9 @@ namespace SimpleSplit.Common
         /// <param name="parameter">the actual parameter</param>
         /// <param name="parameterName">the name of the parameter</param>
         /// <param name="message">an optional message instead of the default</param>
-        public static T ThrowIfNull<T>(this T parameter, string parameterName, string message = null) where T : class
+        public static T ThrowIfNull<T>(this T parameter, 
+            [CallerArgumentExpression("parameter")] string parameterName = null, 
+            string message = null) where T : class
         {
             if (parameter == null)
             {
@@ -26,7 +28,9 @@ namespace SimpleSplit.Common
         /// <param name="parameter">the actual string parameter</param>
         /// <param name="parameterName">the name of the parameter</param>
         /// <param name="message">an optional message instead of the default</param>
-        public static string ThrowIfEmpty(this string parameter, string parameterName, string message = null)
+        public static string ThrowIfEmpty(this string parameter, 
+            [CallerArgumentExpression("parameter")] string parameterName = null, 
+            string message = null)
         {
             if (string.IsNullOrEmpty(parameter))
             {

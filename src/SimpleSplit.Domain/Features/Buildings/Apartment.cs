@@ -24,28 +24,32 @@ namespace SimpleSplit.Domain.Features.Buildings
         public BuildingID BuildingID { get; private set; }
 
         // Ratios per expense category. Ratio is between 0 and 1000
-        public Dictionary<Expenses.Category.CategoryKind, double> Ratios { get; set; }
+        private Dictionary<Expenses.Category.CategoryKind, double> _ratios;
+
+        public Dictionary<Expenses.Category.CategoryKind, double> Ratios
+        {
+            get => _ratios;
+            set
+            {
+                ValidateRatios(value);
+                _ratios = value;
+            }
+        }
 
         public override string ToString() => $"{SortingNum} - {Code}, {Dweller ?? Owner}";
 
-        public Apartment(ApartmentID id, string code, string dweller, string owner, string sortingNum,
+        public Apartment(ApartmentID id,
+            string code,
+            string dweller,
+            string owner,
+            string sortingNum,
             Dictionary<Expenses.Category.CategoryKind, double> ratios) : base(id)
         {
-            Code       = code ?? throw new ArgumentNullException(nameof(code));
-            Dweller    = dweller ?? throw new ArgumentNullException(nameof(dweller));
+            Code       = code.ThrowIfNull();
+            Dweller    = dweller.ThrowIfNull();
+            SortingNum = sortingNum.ThrowIfNull();
+            Ratios     = ratios.ThrowIfNull();
             Owner      = owner ?? dweller;
-            SortingNum = sortingNum ?? throw new ArgumentNullException(nameof(sortingNum));
-            Ratios     = ratios ?? throw new ArgumentNullException(nameof(ratios));
-
-            if (Ratios.Any(rt => rt.Value is < 0 or > 1000))
-            {
-                var ratiosStr = String.Join(" ", ratios.Select(k => $"{k}").ToArray());
-                throw new ArgumentException($"Invalid ratios values: {ratiosStr}");
-            }
-
-            var allCategoryKinds = Enum.GetValues<Expenses.Category.CategoryKind>().OrderBy(kind => kind);
-            if (!Ratios.Keys.OrderBy(key => key).SequenceEqual(allCategoryKinds))
-                throw new ArgumentException($"Not all expense kind ratios defined for apartment {Code}");
         }
 
         protected Apartment()
@@ -67,6 +71,19 @@ namespace SimpleSplit.Domain.Features.Buildings
         {
             Dweller = newDweller;
             // TODO Somehow keep history
+        }
+
+        private void ValidateRatios(Dictionary<Expenses.Category.CategoryKind, double> ratios)
+        {
+            if (_ratios.Any(rt => rt.Value is < 0 or > 1000))
+            {
+                var ratiosStr = String.Join(" ", ratios.Select(k => $"{k}").ToArray());
+                throw new ArgumentException($"Invalid ratios values: {ratiosStr}");
+            }
+
+            var allCategoryKinds = Enum.GetValues<Expenses.Category.CategoryKind>().OrderBy(kind => kind);
+            if (!ratios.Keys.OrderBy(key => key).SequenceEqual(allCategoryKinds))
+                throw new ArgumentException($"Not all expense kind ratios defined for apartment {Code}");
         }
     }
 }

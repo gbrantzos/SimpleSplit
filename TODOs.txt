@@ -32,3 +32,12 @@ indexed by table/key
 interface ISupportsHistory
 -- AddChange(entity (?), key, old value, new value)
 -- GetAllChanges (to be used by SaveAsync)
+
+
+
+- Templates for new Simple C# stuff
+    * Domain -> EntityID, Entity, repository (interface)
+    * Application -> ViewModel, CRUD commands & handlers, mapping
+    * Infrastructure -> repository (concrete), entity type configuration
+    * WebAPI -> Controller
+- Docker based integration tests
